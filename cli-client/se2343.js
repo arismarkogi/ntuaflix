@@ -76,7 +76,7 @@ function handleError(error) {
 
 function validateParameters(scope, params) {
   const supportedParams = getSupportedParameters(scope);
-
+  //const validParamNames = supportedParams.map(param => param.startsWith('--') ? param.slice(2) : param);
   // Έλεγχος για την ύπαρξη των απαιτούμενων παραμέτρων
   const requiredParams = supportedParams.filter(param => !param.startsWith('--'));
   for (const requiredParam of requiredParams) {
@@ -86,7 +86,7 @@ function validateParameters(scope, params) {
       console.error(`Parameter ${requiredParam} is required for scope ${scope}.`);
       process.exit(1);
     }
-  }  
+  }
 }
 
 
@@ -203,7 +203,3 @@ function parseParameters(paramArray) {
   return params;
 }
 
-
-//module.exports = {
-  //handleCLICommand,
-//};
