@@ -3,6 +3,7 @@ const https = require('https');
 const fs = require('fs');
 const axios = require('axios');
 const routes = require('./routes'); 
+const path = require('path');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -12,11 +13,9 @@ const port = 9876;
 app.use('/', routes);
 
 const options = {
-    key: fs.readFileSync('./certificates/private-key.pem'),
-    cert: fs.readFileSync('./certificates/certificate.pem'),
-    requestCert: true,
-    rejectUnauthorized: false
-  };
+  key: fs.readFileSync(path.join(__dirname, 'certificates/private-key.pem')),  // Modify this line
+  cert: fs.readFileSync(path.join(__dirname, 'certificates/certificate.pem')), // Modify this line
+};
   
 
 const server = https.createServer(options, app);
