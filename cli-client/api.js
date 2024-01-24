@@ -1,12 +1,32 @@
-// api.js
-const axios = require('axios');
+/*const axios = require('axios');
+
+const baseURL = 'https://{{host}}:9876/ntuaflix_api'; // Αντικαταστήστε με το πραγματικό base URL
 
 function getTitleById(titleID) {
-  return axios.get(`/title/${titleID}`);
+  return axios.get(`${baseURL}/title/${titleID}`);
 }
 
-function searchTitle(titlePart) {
-  return axios.get('/searchtitle', { data: { titlePart } });
+function searchTitleByPart(titlePart) {
+  return axios.get(`${baseURL}/searchtitle`, { data: { titlePart } });
 }
 
-// Υπόλοιπες συναρτήσεις για τα υπόλοιπα endpoints
+function searchByGenre(gquery) {
+  return axios.get(`${baseURL}/bygenre`, { data: gquery });
+}
+
+function getNameById(nameID) {
+  return axios.get(`${baseURL}/name/${nameID}`);
+}
+
+function searchNameByPart(namePart) {
+  return axios.get(`${baseURL}/searchname`, { data: { namePart } });
+}
+
+module.exports = {
+  getTitleById,
+  searchTitleByPart,
+  searchByGenre,
+  getNameById,
+  searchNameByPart,
+};
+*/
