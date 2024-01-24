@@ -64,11 +64,16 @@ async function searchNameByPart(namePart) {
   }
 }
 
+
+const { Parser } = require('json2csv');
 function handleResponse(data, format) {
   // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα ανάλογα με το format
   if (format === 'json') {
     console.log(JSON.stringify(data, null, 2));
   } else if (format === 'csv') {
+    const parser = new Parser();
+    const csvData = parser.parse(data);
+    console.log(csvData);
     // Υλοποιήστε τον κώδικα για το format CSV
   }
 }
