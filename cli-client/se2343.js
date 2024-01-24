@@ -1,6 +1,5 @@
 // Κώδικας του προγράμματος...
 
-
 const axios = require('axios');
 
 const baseURL = 'https://{{host}}:9876/ntuaflix_api';
@@ -74,39 +73,48 @@ function handleError(error) {
   console.error(error);
 }
 
+
 function validateParameters(scope, params) {
   const supportedParams = getSupportedParameters(scope);
-  //const validParamNames = supportedParams.map(param => param.startsWith('--') ? param.slice(2) : param);
+
+  for (const paramName in params) {
+    const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
+    if (!(cleanParamName in supportedParams)) {
+      showSupportedParameters(scope);
+      //console.error(`Parameter ${paramName} is not supported for scope ${scope}.`);
+      process.exit(1);
+    }
+  }
+
   // Έλεγχος για την ύπαρξη των απαιτούμενων παραμέτρων
-  const requiredParams = supportedParams.filter(param => !param.startsWith('--'));
-  for (const requiredParam of requiredParams) {
-    const paramName = requiredParam.startsWith('--') ? requiredParam.slice(2) : requiredParam;
-    
-    if (!params[paramName]) {
-      console.error(`Parameter ${requiredParam} is required for scope ${scope}.`);
+  for (const paramName in supportedParams) {
+    const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
+    if (supportedParams[paramName] === 'required' && !params[cleanParamName]) {
+      showSupportedParameters(scope);
+      //console.error(`Parameter ${paramName} is required for scope ${scope}.`);
       process.exit(1);
     }
   }
 }
 
-
 function getSupportedParameters(scope) {
   switch (scope) {
     case 'title':
-      return ['--titleID', '--format'];
+      return { titleID: 'required', format: 'optional' };
     case 'searchtitle':
-      return ['--titlePart', '--format'];
+      return { titlePart: 'required', format: 'optional' };
     case 'bygenre':
-      return ['--genre','--min','(--from)','(--to)', '--format'];
+      return { genre: 'required', min: 'required', from: 'optional', to: 'optional', format: 'optional' };
     case 'name':
-      return ['--nameID', '--format'];
+      return { nameID: 'required', format: 'optional' };
     case 'searchname':
-      return ['--namePart', '--format'];
+      return { name: 'required', format: 'optional' };
     // Προσθέστε περισσότερα cases για τα υπόλοιπα scopes...
     default:
-      return [];
+      return {};
   }
 }
+
 
 // Βασική συνάρτηση για τη διαχείριση της κλήσης από το CLI
 function handleCLICommand(scope, params, format) {
@@ -125,24 +133,7 @@ function handleCLICommand(scope, params, format) {
       searchTitleByPart(params.titlePart, format);
       break;
     case 'bygenre':
-      const genreIndex = params.indexOf('--genre');
-      const minIndex = params.indexOf('--min');
-      const fromIndex = rest.indexOf('from');
-      const toIndex = rest.indexOf('to');
-
-      if (genreIndex === -1 || minIndex === -1) {
-        console.error('Required parameters --genre and --min are missing.');
-        process.exit(1);
-      }
-
-      const gquery = rest[genreIndex + 1];
-      const min = rest[minIndex + 1];
-      const from = fromIndex !== -1 ? rest[fromIndex + 1] : null;
-      const to = toIndex !== -1 ? rest[toIndex + 1] : null;
-
-      searchByGenre(params.gquery, params.min, params.from, params.to, format);
-
-      //searchByGenre(params.gquery,format);
+      searchByGenre(params.gquery,format);
       break;
     case 'name':
       getNameById(params.nameID, format);
@@ -150,12 +141,12 @@ function handleCLICommand(scope, params, format) {
     case 'searchname':
       searchNameByPart(params.namePart,format);
       break;  
-      // Προσθέστε περισσότερα cases για τα υπόλοιπα scopes...
     default:
       console.error('Invalid scope.');
       process.exit(1);
   }
 }
+
 
 function showSupportedParameters() {
   const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname'];
@@ -163,17 +154,13 @@ function showSupportedParameters() {
   allScopes.forEach((scope) => {
     const supportedParams = getSupportedParameters(scope);
     console.log(`Supported parameters for scope '${scope}':`);
-    supportedParams.forEach(param => console.log(`${param}`));
+    
+    Object.keys(supportedParams).forEach(param => {
+      console.log(`${param}`);
+    });
   });
 }
 
-/*
-function showSupportedParameters(scope) {
-  const supportedParams = getSupportedParameters(scope);
-  console.log(`Supported parameters for scope '${scope}':`);
-  supportedParams.forEach(param => console.log(`${param}`));
-}
-*/
 
 // Παράδειγμα χρήσης από το CLI
 const args = process.argv.slice(2); // Παίρνει τις παραμέτρους από τη γραμμή εντολών
@@ -184,7 +171,6 @@ const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json'; // Αναζ�
 
 handleCLICommand(scope, params, format);
 
-//module.exports.handleCLICommand(scope, params, format);
 
 function parseParameters(paramArray) {
   const params = {};
