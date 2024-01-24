@@ -1,14 +1,19 @@
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
+const axios = require('axios');
+
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const app = express();
 const port = 9876;
 
-
 const options = {
     key: fs.readFileSync('./certificates/private-key.pem'),
     cert: fs.readFileSync('./certificates/certificate.pem'),
+    requestCert: true,
+    rejectUnauthorized: false
   };
   
 

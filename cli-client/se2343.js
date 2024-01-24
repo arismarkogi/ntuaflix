@@ -1,8 +1,12 @@
 // Κώδικας του προγράμματος...
-
+var https = require('https');
+var fs = require('fs')
 const axios = require('axios');
 
-const baseURL = 'https://{{host}}:9876/ntuaflix_api';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+
+const baseURL = 'https://localhost:9876/ntuaflix_api';
 
 // Ο κώδικας για να καλέσετε το API endpoint /title/:titleID
 async function getTitleById(titleID) {
