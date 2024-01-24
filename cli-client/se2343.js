@@ -186,6 +186,13 @@ function parseParameters(paramArray) {
     }
   });
 
+  for (const paramName in params) {
+    if (params[paramName] === true) {
+      console.error(`Value is missing for parameter --${paramName}`);
+      process.exit(1);
+    }
+  }
+
   return params;
 }
 
