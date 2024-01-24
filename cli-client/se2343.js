@@ -64,6 +64,42 @@ async function searchNameByPart(namePart) {
   }
 }
 
+async function healthcheck() {
+  try {
+    const response = await axios.post(`${baseURL}/healthcheck`);
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function resetAll() {
+  try {
+    const response = await axios.post(`${baseURL}/resetall`);
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function newTitles(filename) {
+  try {
+    const response = await axios.post(`${baseURL}/newtitles`, { filename });
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function newAkas(filename) {
+  try {
+    const response = await axios.post(`${baseURL}/newakas`, { filename });
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 const { Parser } = require('json2csv');
 function handleResponse(data, format) {
