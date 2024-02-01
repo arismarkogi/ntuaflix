@@ -1,4 +1,4 @@
-import { getTitleDetails, searchTitle, searchByGenre, searchName, getNameDetails } from './dbQueries.js';
+//import { getTitleDetails, searchTitle, searchByGenre, searchName, getNameDetails } from './dbQueries.js';
 
 class titleObject {
   constructor(
@@ -227,3 +227,4 @@ class titleObject {
     }
   }
 
+  module.exports = {titleObject, tQueryObject, gQueryObject}
