@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { titleObject, tQueryObject, gQueryObject } = require('./models');
+const { titleObject, tQueryObject, gQueryObject } = require('./models.js');
 
 function handleErrors(res, error) {
   console.error('Error:', error);
