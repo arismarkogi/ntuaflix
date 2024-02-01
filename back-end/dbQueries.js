@@ -22,7 +22,7 @@ const getTitleDetails = async (titleID) => {
   tb.originalTitle,
   tb.img_url_asset AS titlePoster,
   tb.startYear,
-  tb.endYear,
+  COALESCE(tb.endYear, 'N/A') AS endYear,
   tb.genres,
   GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.region, 'N/A'), ':', IFNULL(ta.title, 'N/A')) SEPARATOR ',') AS akaTitlesWithRegion,
   GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), ':', IFNULL(p.primaryName, 'N/A'), ':', IFNULL(tp.category, 'N/A')) SEPARATOR ',') AS castAndCrew,
@@ -176,4 +176,3 @@ const searchName = async (namePart) => {
   };
   
   
-

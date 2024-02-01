@@ -5,12 +5,11 @@ const axios = require('axios');
 const routes = require('./routes'); 
 const path = require('path');
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const app = express();
 const port = 9876;
 
-app.use('/', routes);
+app.use('/ntuaflix_api', routes);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, 'certificates/private-key.pem')),  // Modify this line
