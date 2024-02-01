@@ -1,18 +1,18 @@
-//import { getTitleDetails, searchTitle, searchByGenre, searchName, getNameDetails } from './dbQueries.js';
+const { getTitleDetails, searchTitle, searchByGenre, searchName, getNameDetails } = require('./dbQueries.js');
 
 class titleObject {
   constructor(
-    titleID,
-    type,
-    originalTitle,
-    titlePoster,
-    startYear,
-    endYear,
-    genres,
-    titleAkas,
-    principals,
-    avRating,
-    nVotes
+    titleID = '',
+    type = '',
+    originalTitle = '',
+    titlePoster = '',
+    startYear = '',
+    endYear = '',
+    genres = '',
+    titleAkas = '',
+    principals = '',
+    avRating = 0,
+    nVotes = 0
   ) {
     this.titleID = titleID;
     this.type = type;
@@ -20,19 +20,20 @@ class titleObject {
     this.titlePoster = titlePoster;
     this.startYear = startYear;
     this.endYear = endYear;
-    this.genres = genres.split(',').map((genreTitle) => new Genre(genreTitle.trim()));
-    this.titleAkas = titleAkas.split(',').map((aka) => {
+    this.genres = genres ? genres.split(',').map((genreTitle) => new Genre(genreTitle.trim())) : [];
+    this.titleAkas = titleAkas ? titleAkas.split(',').map((aka) => {
       const [akaTitle, regionAbbrev] = aka.split(':');
       return new TitleAka(akaTitle.trim(), regionAbbrev.trim());
-    });
-    this.principals = principals.split(',').map((principal) => {
+    }) : [];
+    this.principals = principals ? principals.split(',').map((principal) => {
       const [nameID, name, category] = principal.split(':');
       return new TitlePrincipal(nameID.trim(), name.trim(), category.trim());
-    });
+    }) : [];
     this.rating = new Rating(avRating, nVotes);
   }
+  
 
-  async getByTitleID(titleID) {
+   async getByTitleID(titleID) {
     try {
       const titleDetails = await getTitleDetails(titleID);
       return new titleObject(
@@ -54,7 +55,7 @@ class titleObject {
     }
   }
 
-  async getByTitlePart(tqueryObject){
+  static async getByTitlePart(tqueryObject){
     
     // Remeber to to the gquery in the API call  
     try{
@@ -83,7 +84,7 @@ class titleObject {
     }
   }
 
-  async getByGenre(gqueryObject){
+  static async getByGenre(gqueryObject){
 
     try{
       const byGenreListData = await searchByGenre(gqueryObject.qgenre, gqueryObject.minrating, gqueryObject.yrFrom, gqueryObject.yrTo);
@@ -170,10 +171,10 @@ class titleObject {
       });
     }
 
-    async getNameDetails(nameID){
+    static async getByNameID(nameID){
 
       try {
-        const nameDetails = await searchName(nameID);
+        const nameDetails = await getNameDetails(nameID);
         return new nameObject(
           nameDetails.nameID,
           nameDetails.name,
@@ -190,7 +191,7 @@ class titleObject {
 
     }
 
-    async getByNamePart(nqueryobject){
+    static async getByNamePart(nqueryobject){
 
       try {
         const byNamePartListData = await searchName(nqueryobject.namePart);

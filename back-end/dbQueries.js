@@ -1,4 +1,4 @@
-import { executeQuery } from './database/db';
+const { executeQuery } = require('./database/db.js');
 
 // Example INSERT query
 const insertData = async () => {
@@ -174,5 +174,8 @@ const searchName = async (namePart) => {
       throw error; // Rethrow the error
     }
   };
+
+  module.exports = {getTitleDetails, getNameDetails, searchName, searchByGenre, searchTitle };
+
   
   

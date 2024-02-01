@@ -1,18 +1,18 @@
 // db.js
+const { createPool } = require('mysql');
 
-import { createPool } from 'mysql';
-
-// Create a MySQL connection pool
 const pool = createPool({
   host: 'localhost',
   user: 'ntuaflix_user',
   password: '12345Ab$',
   database: 'ntuaflix_db',
-  connectionLimit: 10, // Adjust this based on your requirements
+  authPlugins: {
+    mysql_native_password: () => require('mysql2/lib/auth/mysql_native_password')
+  },
+  protocol: 'mysql_native_password',
 });
 
-// Function to execute a query
-export const executeQuery = (query, values) => {
+const executeQuery = (query, values) => {
   return new Promise((resolve, reject) => {
     pool.query(query, values, (error, results) => {
       if (error) {
@@ -23,3 +23,5 @@ export const executeQuery = (query, values) => {
     });
   });
 };
+
+module.exports = { executeQuery };

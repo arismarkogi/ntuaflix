@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { titleObject, tQueryObject, gQueryObject } = require('./models.js');
+const { titleObject, tQueryObject, gQueryObject} = require('./models.js');
+
+const titleobject = new titleObject();
 
 function handleErrors(res, error) {
   console.error('Error:', error);
@@ -53,7 +55,7 @@ router.get('/title/:titleID', async (req, res) => {
       throw new ValidationError('ValidationError');
     }
 
-    const titleInstance = await getTitleInstance(titleID);
+    const titleInstance = await titleobject.getByTitleID(titleID);
 
     if (Object.keys(titleInstance).length > 0) {
       res.status(200).json(titleInstance); // Success with data
@@ -76,7 +78,7 @@ router.get('/searchtitle', async (req, res) => {
     }
 
 
-    const titleList = await new titleObject().getByTitlePart(new tQueryObject(titlePart));
+    const titleList = await titleobject.getByTitlePart(new tQueryObject(titlePart));
     // Check if titleList is not empty to determine the appropriate status code
     if (titleList.length > 0) {
       res.status(200).json(titleList); // Success with data
@@ -96,7 +98,7 @@ router.get('/bygenre', async (req, res) => {
       throw new ValidationError('ValidationError');
     }
 
-    const byGenreList = await new titleObject().getByGenre(new gQueryObject(qgenre, minrating, yrFrom, yrTo));
+    const byGenreList = await titleobject.getByGenre(new gQueryObject(qgenre, minrating, yrFrom, yrTo));
     
     if (byGenreList.length > 0) {
       res.status(200).json(byGenreList); // Success with data
