@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NTUAFlix Frontend</title>
+</head>
+<body>
+
+    <h1>NTUAFlix Frontend</h1>
+
+    <label for="titleID">Enter title ID:</label>
+    <input type="text" id="titleID" placeholder="Title ID">
+    <button onclick="getTitleDetails()">Get Title Details</button>
+
+    <br>
+
+    <label for="titlePart">Enter title part:</label>
+    <input type="text" id="titlePart" placeholder="Title Part">
+    <button onclick="searchByTitle()">Search by Title</button>
+
+    <br>
+
+    <label for="genre">Enter genre:</label>
+    <input type="text" id="genre" placeholder="Genre">
+    <label for="minRating">Enter min rating:</label>
+    <input type="text" id="minRating" placeholder="Min Rating">
+    <label for="startYear">Enter start year:</label>
+    <input type="text" id="startYear" placeholder="Start Year">
+    <label for="endYear">Enter end year:</label>
+    <input type="text" id="endYear" placeholder="End Year">
+    <button onclick="searchByGenre()">Search by Genre</button>
+
+    <br>
+
+    <label for="nameID">Enter name ID:</label>
+    <input type="text" id="nameID" placeholder="Name ID">
+    <button onclick="getNameDetails()">Get Name Details</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="frontend.js"></script>
+
+</body>
+</html>
