@@ -9,6 +9,7 @@ const path = require('path');
 const app = express();
 const port = 9876;
 
+
 app.use('/ntuaflix_api', routes);
 
 const options = {
@@ -16,7 +17,6 @@ const options = {
   cert: fs.readFileSync(path.join(__dirname, 'certificates/certificate.pem')), // Modify this line
 };
   
-
 const server = https.createServer(options, app);
 
 server.listen(port, () => {
