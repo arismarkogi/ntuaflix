@@ -1,17 +1,6 @@
 const { executeQuery } = require('./database/db.js');
 
-// Example INSERT query
-const insertData = async () => {
-  const query = 'INSERT INTO your_table (column1, column2) VALUES (?, ?)';
-  const values = ['value1', 'value2'];
 
-  try {
-    const result = await executeQuery(query, values);
-    console.log('Inserted successfully:', result);
-  } catch (error) {
-    console.error('Error inserting data:', error);
-  }
-};
 
 // a. [GET] /title/:titleID
 const getTitleDetails = async (titleID) => {
@@ -22,12 +11,12 @@ const getTitleDetails = async (titleID) => {
   tb.originalTitle,
   tb.img_url_asset AS titlePoster,
   tb.startYear,
-  COALESCE(tb.endYear, 'N/A') AS endYear,
+  tb.endYear AS endYear,
   tb.genres,
-  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.region, 'N/A'), ':', IFNULL(ta.title, 'N/A')) SEPARATOR ',') AS akaTitlesWithRegion,
-  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), ':', IFNULL(p.primaryName, 'N/A'), ':', IFNULL(tp.category, 'N/A')) SEPARATOR ',') AS castAndCrew,
-  COALESCE(tr.averageRating, 0) AS avRating,
-  COALESCE(tr.numVotes, 0) AS nVotes
+  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.title, 'N/A'), '/*/', IFNULL(ta.region, 'N/A')) SEPARATOR '/**/') AS akaTitlesWithRegion,
+  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), '/*/', IFNULL(p.primaryName, 'N/A'), '/*/', IFNULL(tp.category, 'N/A')) SEPARATOR '/**/') AS castAndCrew,
+  tr.averageRating AS avRating,
+  tr.numVotes AS nVotes
   FROM TitleBasics tb
   JOIN TitleAkas ta ON tb.tconst = ta.titleId
   JOIN TitlePrincipal tp ON tb.tconst = tp.tconst
@@ -57,10 +46,10 @@ const searchTitle = async(titlePart)=>{
   tb.startYear,
   tb.endYear,
   tb.genres,
-  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.region, 'N/A'), ':', IFNULL(ta.title, 'N/A')) SEPARATOR ',') AS akaTitlesWithRegion,
-  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), ':', IFNULL(p.primaryName, 'N/A'), ':', IFNULL(tp.category, 'N/A')) SEPARATOR ',') AS castAndCrew,
-  COALESCE(tr.averageRating, 0) AS avRating,
-  COALESCE(tr.numVotes, 0) AS nVotes
+  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.title, 'N/A'), '/*/', IFNULL(ta.region, 'N/A')) SEPARATOR '/**/') AS akaTitlesWithRegion,
+  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), '/*/', IFNULL(p.primaryName, 'N/A'), '/*/', IFNULL(tp.category, 'N/A')) SEPARATOR '/**/') AS castAndCrew,
+  tr.averageRating AS avRating,
+  tr.numVotes AS nVotes
   FROM TitleBasics tb
   JOIN TitleAkas ta ON tb.tconst = ta.titleId
   JOIN TitlePrincipal tp ON tb.tconst = tp.tconst
@@ -81,45 +70,63 @@ try {
 
 };
 
-//c. [GET] /bygenre
-const searchByGenre = async(qgenre, minrating, yrFrom, yrTo)=>{
-  const query = `
-  SELECT 
-  tb.tconst AS titleID,
-  tb.titleType AS type,
-  tb.originalTitle,
-  tb.img_url_asset AS titlePoster,
-  tb.startYear,
-  tb.endYear,
-  tb.genres,
-  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.region, 'N/A'), ':', IFNULL(ta.title, 'N/A')) SEPARATOR ',') AS akaTitlesWithRegion,
-  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), ':', IFNULL(p.primaryName, 'N/A'), ':', IFNULL(tp.category, 'N/A')) SEPARATOR ',') AS castAndCrew,
-  COALESCE(tr.averageRating, 0) AS avRating,
-  COALESCE(tr.numVotes, 0) AS nVotes
-  FROM TitleBasics tb
-  JOIN TitleAkas ta ON tb.tconst = ta.titleId
-  JOIN TitlePrincipal tp ON tb.tconst = tp.tconst
-  JOIN Person p ON tp.nconst = p.nconst
-  LEFT JOIN TitleRating tr ON tb.tconst = tr.tconst
-  WHERE 
-      tb.genres LIKE CONCAT('%', :qgenre, '%')
-      AND tr.averageRating >= :minrating
-      AND (:yrFrom IS NULL OR tb.startYear >= :yrFrom)
-      AND (:yrTo IS NULL OR tb.startYear <= :yrTo)
-  GROUP BY tb.tconst;
+// c. [GET] /bygenre
+const searchByGenre = async (qgenre, minrating, yrFrom, yrTo) => {
+  let query = `
+    SELECT 
+      tb.tconst AS titleID,
+      tb.titleType AS type,
+      tb.originalTitle,
+      tb.img_url_asset AS titlePoster,
+      tb.startYear,
+      tb.endYear,
+      tb.genres,
+      GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.title, 'N/A'), '/*/', IFNULL(ta.region, 'N/A')) SEPARATOR '/**/') AS akaTitlesWithRegion,
+      GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), '/*/', IFNULL(p.primaryName, 'N/A'), '/*/', IFNULL(tp.category, 'N/A')) SEPARATOR '/**/') AS castAndCrew,
+      tr.averageRating AS avRating,
+      tr.numVotes AS nVotes
+    FROM TitleBasics tb
+      JOIN TitleAkas ta ON tb.tconst = ta.titleId
+      JOIN TitlePrincipal tp ON tb.tconst = tp.tconst
+      JOIN Person p ON tp.nconst = p.nconst
+      LEFT JOIN TitleRating tr ON tb.tconst = tr.tconst
+    WHERE  
+      tb.genres LIKE CONCAT('%', ?, '%') AND 
+      tr.averageRating >= ?`;
 
-  `;
-try {
-  const result = await executeQuery(query, [qgenre, minrating, yrFrom, yrTo]);
-  console.log('Fetched data:', result);
-  return result.length > 0 ? result : null;
+  if (yrFrom !== null && !isNaN(yrFrom)) {
+    query += ' AND tb.startYear >= ?';
+  }
 
-} catch (error) {
-  console.error('Error fetching data:', error);
-  throw error; // Rethrow the error
-}
+  if (yrTo !== null && !isNaN(yrTo)) {
+    query += ' AND tb.startYear <= ?';
+  }
 
+  query += ' GROUP BY tb.tconst;';
+
+  try {
+    console.log('minrating:', minrating);
+
+    // Determine the parameters to pass based on null checks
+    const params = [qgenre, minrating];
+    if (yrFrom !== null && !isNaN(yrFrom)) {
+      params.push(yrFrom);
+    }
+    if (yrTo !== null && !isNaN(yrTo)) {
+      params.push(yrTo);
+    }
+
+    console.log(params);
+
+    const result = await executeQuery(query, params);
+    console.log('Fetched data:', result);
+    return result.length > 0 ? result : null;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Rethrow the error
+  }
 };
+
 
 // d. [GET] /name/:nameID
 const getNameDetails = async (nameID) => {
@@ -127,14 +134,17 @@ const getNameDetails = async (nameID) => {
     SELECT
     p.nconst AS nameID,
     p.primaryName AS name,
-    p.img_url AS namePoster,
-    p.birthYear,
-    p.deathYear,
+    p.img_url_asset AS namePoster,
+    p.birthYear AS birthYr,
+    p.deathYear AS deathYr,
     p.primaryProfession AS profession,
-    (GROUP_CONCAT(DISTINCT CONCAT (IFNULL (tp.tconst, 'N/A'), ':', IFNULL (tp.category, 'N/A')) SEPARATOR = ',') AS nameTitles
+    (
+        SELECT GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.tconst, 'N/A'), '/*/', IFNULL(tp.category, 'N/A')) SEPARATOR '/**/')
+        FROM TitlePrincipal tp
+        WHERE p.nconst = tp.nconst
+    ) AS nameTitles
     FROM Person p
-    LEFT JOIN TitlePrincipal tp ON p.nconst = tp.nconst
-    WHERE p.nconst = ?
+    WHERE p.nconst = ?;
    `;
  
     try {
@@ -154,11 +164,11 @@ const searchName = async (namePart) => {
       SELECT
         p.nconst AS nameID,
         p.primaryName AS name,
-        p.image_url AS namePoster,
-        p.birthYear,
-        p.deathYear,
+        p.img_url_asset AS namePoster,
+        p.birthYear AS birthYr,
+        p.deathYear AS deathYr,
         p.primaryProfession AS profession,
-        GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.tconst, 'N/A'), ':', IFNULL(tp.category, 'N/A')) SEPARATOR ',') AS nameTitles
+        GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.tconst, 'N/A'), '/*/', IFNULL(tp.category, 'N/A')) SEPARATOR '/**/') AS nameTitles
       FROM Person p
       LEFT JOIN TitlePrincipal tp ON p.nconst = tp.nconst
       WHERE p.primaryName LIKE ?

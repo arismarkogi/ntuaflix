@@ -21,14 +21,16 @@ class titleObject {
     this.startYear = startYear;
     this.endYear = endYear;
     this.genres = genres ? genres.split(',').map((genreTitle) => new Genre(genreTitle.trim())) : [];
-    this.titleAkas = titleAkas ? titleAkas.split(',').map((aka) => {
-      const [akaTitle, regionAbbrev] = aka.split(':');
-      return new TitleAka(akaTitle.trim(), regionAbbrev.trim());
-    }) : [];
-    this.principals = principals ? principals.split(',').map((principal) => {
-      const [nameID, name, category] = principal.split(':');
-      return new TitlePrincipal(nameID.trim(), name.trim(), category.trim());
-    }) : [];
+    this.titleAkas = titleAkas ? titleAkas.split('/**/').map((aka) => {
+      const [akaTitle, regionAbbrev] = aka.split('/*/').map(value => value.trim() === 'N/A' ? null : value.trim());
+      return new TitleAka(akaTitle, regionAbbrev);
+  }) : [];
+  
+  this.principals = principals ? principals.split('/**/').map((principal) => {
+      const [nameID, name, category] = principal.split('/*/').map(value => value.trim() === 'N/A' ? null : value.trim());
+      return new TitlePrincipal(nameID, name, category);
+  }) : [];
+  
     this.rating = new Rating(avRating, nVotes);
   }
   
@@ -36,6 +38,10 @@ class titleObject {
    async getByTitleID(titleID) {
     try {
       const titleDetails = await getTitleDetails(titleID);
+
+      if(!titleDetails){
+        return null;
+      }
       return new titleObject(
         titleDetails.titleID,
         titleDetails.type,
@@ -55,12 +61,15 @@ class titleObject {
     }
   }
 
-  static async getByTitlePart(tqueryObject){
+  async getByTitlePart(tQueryObject){
     
     // Remeber to to the gquery in the API call  
     try{
-      const titleListData = await searchTitle(tqueryObject.titlePart);
-      
+      const titleListData = await searchTitle(tQueryObject.titlePart);
+
+      if(!titleListData){
+        return null;
+      }
       // Map the title data to create an array of titleObject instances
       const titleList = titleListData.map(titleData => new titleObject(
       titleData.titleID,
@@ -70,8 +79,8 @@ class titleObject {
       titleData.startYear,
       titleData.endYear,
       titleData.genres,
-      titleData.titleAkas,
-      titleData.principals,
+      titleData.akaTitlesWithRegion,
+      titleData.castAndCrew,
       titleData.avRating,
       titleData.nVotes
     ));
@@ -84,11 +93,14 @@ class titleObject {
     }
   }
 
-  static async getByGenre(gqueryObject){
+  async getByGenre(gqueryObject){
 
     try{
       const byGenreListData = await searchByGenre(gqueryObject.qgenre, gqueryObject.minrating, gqueryObject.yrFrom, gqueryObject.yrTo);
       
+      if(!byGenreListData){
+        return null;
+      }
       // Map the title data to create an array of titleObject instances
       const byGenreList = byGenreListData.map(byGenreData => new titleObject(
       byGenreData.titleID,
@@ -98,8 +110,8 @@ class titleObject {
       byGenreData.startYear,
       byGenreData.endYear,
       byGenreData.genres,
-      byGenreData.titleAkas,
-      byGenreData.principals,
+      byGenreData.akaTitlesWithRegion,
+      byGenreData.castAndCrew,
       byGenreData.avRating,
       byGenreData.nVotes
     ));
@@ -142,13 +154,13 @@ class titleObject {
     }
   }
 
-  class tQueryObject {
+  class tqueryObject {
     constructor(titlePart) {
       this.titlePart = titlePart;
     }
   }
 
-  class gQueryObject {
+  class gqueryObject {
     constructor(qgenre, minrating, yrFrom, yrTo) {
       this.qgenre = qgenre;
       this.minrating = minrating;
@@ -165,16 +177,20 @@ class titleObject {
       this.birthYr = birthYr;
       this.deathYr = deathYr;
       this.profession = profession;
-      this.nameTitles = nameTitles.split(',').map((title) => {
-        const [titleID, category] = title.split(':');
-        return new NameTitle(titleID.trim(), category.trim());
-      });
+      this.nameTitles = nameTitles ? nameTitles.split('/**/').map((title) => {
+        const [titleID, category] = title.split('/*/').map(value => value.trim() === 'N/A' ? null : value.trim());
+        return new NameTitle(titleID, category);
+    }) : [];
+    
     }
 
-    static async getByNameID(nameID){
+    async getByNameID(nameID){
 
       try {
         const nameDetails = await getNameDetails(nameID);
+        if(!nameDetails){
+          return null;
+        }
         return new nameObject(
           nameDetails.nameID,
           nameDetails.name,
@@ -191,10 +207,14 @@ class titleObject {
 
     }
 
-    static async getByNamePart(nqueryobject){
+    async getByNamePart(nQueryobject){
 
       try {
-        const byNamePartListData = await searchName(nqueryobject.namePart);
+        const byNamePartListData = await searchName(nQueryobject.namePart);
+        
+        if(!byNamePartListData){
+          return null;
+        }
         const byNamePartList = byNamePartListData.map( nameDetails => new nameObject(
           nameDetails.nameID,
           nameDetails.name,
@@ -204,6 +224,7 @@ class titleObject {
           nameDetails.profession,
           nameDetails.nameTitles
         ));
+        console.log(byNamePartList);
         return byNamePartList;
       } catch (error) {
         console.error('Error fetching byNamePartList details:', error);
@@ -228,4 +249,4 @@ class titleObject {
     }
   }
 
-  module.exports = {titleObject, tQueryObject, gQueryObject}
+  module.exports = {titleObject, tqueryObject, gqueryObject, nameObject, nqueryObject}
