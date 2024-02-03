@@ -191,7 +191,7 @@ function handleCLICommand(scope, params, format) {
       getNameById(params.nameID, format);
       break;  
     case 'searchname':
-      searchNameByPart(params.namePart,format);
+      searchNameByPart(params.name,format);
       break;  
     default:
       console.error('Invalid scope.');
