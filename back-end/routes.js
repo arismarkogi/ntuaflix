@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { titleObject, tqueryObject, gqueryObject, nameObject, nqueryObject} = require('./models.js');
-const { json2csv } = require('json-2-csv');
+let converter = require('json-2-csv');
 
 
 const titleobject = new titleObject();
@@ -62,17 +62,14 @@ function sendResponse(req, res, data) {
   const format = req.query.format || 'json';
 
   if (format.toLowerCase() === 'csv') {
-    convertToCSV(data)
-      .then(csvData => {
+        console.log(data);
+        csvData = converter.json2csv(data)
         res.setHeader('Content-Type', 'text/csv');
         console.log(csvData);
         res.status(200).send(csvData);
-      })
-      .catch(error => {
-        console.error('CSV Conversion Error:', error);
-        handleErrors(res, error);
-      });
+      
   } else if (format.toLowerCase() === 'json'){
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json(data); // Default to JSON format
   }else{
     const validationError = new Error('Validation Error');
@@ -81,19 +78,6 @@ function sendResponse(req, res, data) {
   }
 }
 
-const Papa = require('papaparse');
-
-function convertToCSV(data) {
-  console.log(data);
-  return new Promise((resolve, reject) => {
-    try {
-      const csv = Papa.unparse(data);
-      resolve(csv);
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
 
 
 
