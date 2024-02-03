@@ -36,16 +36,13 @@ async function searchTitleByPart(titlePart) {
 
 async function searchByGenre(gquery) {
   try {
-    /*const requestBody = {
-      qgenre: process.argv[4], // Παίρνει την τιμή του --genre
-      minrating: parseFloat(process.argv[6]) // Παίρνει την τιμή του --min και μετατρέπει σε αριθμό
-    };*/
-    const requestBody = {
-      qgenre: gquery.genre,
-      minrating: gquery.minrating
-    };    
-    console.log("Sending request with data:", requestBody);
-    const response = await axios.get(`${baseURL}/bygenre`,{ data : {requestBody} });
+    if (!gquery) {
+      console.error("Invalid or undefined 'gquery'.");
+      return;
+    }
+    const { genre, min } = gquery;
+    console.log("Sending request with data:", gquery);
+    const response = await axios.get(`${baseURL}/bygenre`,{ data : { genre : params.genre, min : params.min } });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
     //console.log(response.data);
@@ -196,7 +193,7 @@ function handleCLICommand(scope, params, format) {
       break;
     case 'bygenre':
       //searchByGenre(params.gquery,format);
-      searchByGenre({ genre: params.genre, minrating: params.min },format);
+      searchByGenre({ genre: params.genre, min: params.min },format);
       break;
     case 'name':
       getNameById(params.nameID, format);
