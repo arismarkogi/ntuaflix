@@ -108,7 +108,6 @@ router.get('/title/:titleID', async (req, res) => {
 router.get('/searchtitle', async (req, res) => {
   try {
     const { titlePart } = req.body;
-
     const tqueryobject = new tqueryObject(titlePart);
     if(!isValidtQuery(tqueryobject)){
       const validationError = new Error('Validation Error');
@@ -132,6 +131,7 @@ router.get('/searchtitle', async (req, res) => {
 router.get('/bygenre', async (req, res) => {
   try {
     const { qgenre, minrating, yrFrom, yrTo } = req.body;
+    console.log(req.body);
 
     const minratingFloat = parseFloat(minrating, 10);
     const yrFromInt = parseInt(yrFrom, 10);
@@ -184,7 +184,6 @@ router.get('/bygenre', async (req, res) => {
 
     try{
       const {namePart} = req.body;
-      
       const nqueryobject = new nqueryObject(namePart)
       
       if(!isValidnQuery(nqueryobject)){

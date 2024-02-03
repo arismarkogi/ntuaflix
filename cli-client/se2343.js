@@ -22,7 +22,10 @@ async function getTitleById(titleID) {
 
 async function searchTitleByPart(titlePart) {
   try {
-    const response = await axios.get(`${baseURL}/searchtitle`);
+    const requestBody = {
+      "titlePart" : titlePart
+    }
+    const response = await axios.get(`${baseURL}/searchtitle`, { data: requestBody });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
     //console.log(response.data);
@@ -33,7 +36,7 @@ async function searchTitleByPart(titlePart) {
 
 async function searchByGenre(gquery) {
   try {
-    const response = await axios.get(`${baseURL}/bygenre`);
+    const response = await axios.get(`${baseURL}/bygenre`,{ data: requestBody });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
     //console.log(response.data);
@@ -55,7 +58,11 @@ async function getNameById(nameID) {
 
 async function searchNameByPart(namePart) {
   try {
-    const response = await axios.get(`${baseURL}/searchname`);
+    const requestBody = {
+      "namePart" : namePart
+    }
+    console.log(namePart);
+    const response = await axios.get(`${baseURL}/searchname`,{ data: requestBody });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
     //console.log(response.data);
