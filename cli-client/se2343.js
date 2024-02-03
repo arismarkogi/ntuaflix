@@ -36,7 +36,16 @@ async function searchTitleByPart(titlePart) {
 
 async function searchByGenre(gquery) {
   try {
-    const response = await axios.get(`${baseURL}/bygenre`,{ data: requestBody });
+    /*const requestBody = {
+      qgenre: process.argv[4], // Παίρνει την τιμή του --genre
+      minrating: parseFloat(process.argv[6]) // Παίρνει την τιμή του --min και μετατρέπει σε αριθμό
+    };*/
+    const requestBody = {
+      qgenre: gquery.genre,
+      minrating: gquery.minrating
+    };    
+    console.log("Sending request with data:", requestBody);
+    const response = await axios.get(`${baseURL}/bygenre`,{ data : {requestBody} });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
     //console.log(response.data);
@@ -177,6 +186,7 @@ function handleCLICommand(scope, params, format) {
 
   validateParameters(scope, params);
 
+
   switch (scope) {
     case 'title':
       getTitleById(params.titleID, format);
@@ -185,7 +195,8 @@ function handleCLICommand(scope, params, format) {
       searchTitleByPart(params.titlePart, format);
       break;
     case 'bygenre':
-      searchByGenre(params.gquery,format);
+      //searchByGenre(params.gquery,format);
+      searchByGenre({ genre: params.genre, minrating: params.min },format);
       break;
     case 'name':
       getNameById(params.nameID, format);
@@ -220,6 +231,10 @@ const [scope, ...rest] = args; // Η πρώτη παράμετρος είναι 
 const params = parseParameters(rest); // Φτιάχνει ένα αντικείμενο με τις παραμέτρους
 const formatIndex = rest.indexOf('--format');
 const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json'; // Αναζητά την παράμετρο --format
+
+if (params.min) {
+  params.min = parseFloat(params.min); // Μετατροπή σε αριθμητική τιμή
+}
 
 handleCLICommand(scope, params, format);
 
