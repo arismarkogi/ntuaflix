@@ -59,10 +59,10 @@ async function getNameById(nameID) {
 async function searchNameByPart(namePart) {
   try {
     const requestBody = {
-      "namePart" : namePart
+      namePart : namePart
     }
     console.log(namePart);
-    const response = await axios.get(`${baseURL}/searchname`,{ data: requestBody });
+    const response = await axios.get(`${baseURL}/searchname`,{ data: { requestBody } });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
     //console.log(response.data);
