@@ -94,7 +94,7 @@ router.get('/title/:titleID', async (req, res) => {
 
     const titleInstance = await titleobject.getByTitleID(titleID);
 
-    if (!titleInstance) {
+    if (titleInstance.titleID === null) {
       
       res.status(204).send(); // Success without data (empty response)
     } else {
@@ -168,7 +168,7 @@ router.get('/bygenre', async (req, res) => {
 
       const nameInstance = await nameobject.getByNameID(nameID);
 
-    if (!nameInstance) {
+    if (nameInstance.nameID === null) {
       
       res.status(204).send(); // Success without data (empty response)
     } else {
