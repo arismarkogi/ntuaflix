@@ -40,13 +40,19 @@ async function searchByGenre(gquery) {
       console.error("Invalid or undefined 'gquery'.");
       return;
     }
-    const { genre, min, from, to } = gquery;
+    requestBody = {
+      "qgenre": gquery.genre,
+      "minrating": gquery.min,
+      "yrFrom": gquery.from, 
+      "yrTo": gquery.to
+    }
+    
       if (!gquery) {
       console.error("Invalid or undefined 'gquery'.");
       return;
     }
     console.log("Sending request with data:", gquery);
-    const response = await axios.get(`${baseURL}/bygenre`,{ data : gquery });
+    const response = await axios.get(`${baseURL}/bygenre`,{ data : requestBody });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
     //console.log(response.data);
