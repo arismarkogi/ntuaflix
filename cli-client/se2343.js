@@ -36,13 +36,17 @@ async function searchTitleByPart(titlePart) {
 
 async function searchByGenre(gquery) {
   try {
-    if (!gquery) {
+    if (!gquery || typeof gquery !== 'object') {
       console.error("Invalid or undefined 'gquery'.");
       return;
     }
-    const { genre, min } = gquery;
+    const { genre, min, from, to } = gquery;
+      if (!gquery) {
+      console.error("Invalid or undefined 'gquery'.");
+      return;
+    }
     console.log("Sending request with data:", gquery);
-    const response = await axios.get(`${baseURL}/bygenre`,{ data : { genre : params.genre, min : params.min } });
+    const response = await axios.get(`${baseURL}/bygenre`,{ params : gquery });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
     //console.log(response.data);
@@ -71,7 +75,6 @@ async function searchNameByPart(namePart) {
     const response = await axios.get(`${baseURL}/searchname`,{ data:  requestBody  });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
-    //console.log(response.data);
   } catch (error) {
     console.error(error);
   }
@@ -139,7 +142,6 @@ function validateParameters(scope, params) {
     const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
     if (!(cleanParamName in supportedParams)) {
       showSupportedParameters(scope);
-      //console.error(`Parameter ${paramName} is not supported for scope ${scope}.`);
       process.exit(1);
     }
   }
@@ -149,7 +151,6 @@ function validateParameters(scope, params) {
     const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
     if (supportedParams[paramName] === 'required' && !params[cleanParamName]) {
       showSupportedParameters(scope);
-      //console.error(`Parameter ${paramName} is required for scope ${scope}.`);
       process.exit(1);
     }
   }
@@ -192,8 +193,8 @@ function handleCLICommand(scope, params, format) {
       searchTitleByPart(params.titlePart, format);
       break;
     case 'bygenre':
-      //searchByGenre(params.gquery,format);
-      searchByGenre({ genre: params.genre, min: params.min },format);
+      //console.log("gquery:", params.gquery);
+      searchByGenre({ genre : params.genre, min : params.min, from : params.from, to : params.to },format);
       break;
     case 'name':
       getNameById(params.nameID, format);
@@ -229,12 +230,7 @@ const params = parseParameters(rest); // Φτιάχνει ένα αντικεί�
 const formatIndex = rest.indexOf('--format');
 const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json'; // Αναζητά την παράμετρο --format
 
-if (params.min) {
-  params.min = parseFloat(params.min); // Μετατροπή σε αριθμητική τιμή
-}
-
 handleCLICommand(scope, params, format);
-
 
 function parseParameters(paramArray) {
   const params = {};
