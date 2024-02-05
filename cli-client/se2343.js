@@ -101,9 +101,9 @@ async function healthcheck() {
   }
 }
 
-async function resetAll() {
+async function resetall() {
   try {
-    const response = await axios.post(`${baseURL}/resetall`);
+    const response = await axios.post(`${baseURL}/admin/resetall`);
     handleResponse(response.data, format);
   } catch (error) {
     console.error(error);
@@ -148,7 +148,7 @@ function handleError(error) {
 }
 
 function validateParameters(scope, params) {
-  if (scope != 'healthcheck'){
+  if (scope != 'healthcheck' && scope != 'resetall'){
     const supportedParams = getSupportedParameters(scope);
 
     for (const paramName in params) {
@@ -170,9 +170,14 @@ function validateParameters(scope, params) {
   
   } 
   else {
-      if (args.length > 1) {
-        console.log('The "healthcheck" scope does not require any parameters.');
-        process.exit(0);
+      if (args.length > 1 && rest.length > 0) {
+        if(scope == 'resetall'){
+          console.log('The "resetall" scope does not require any parameters.');
+          process.exit(0);
+        }else{
+          console.log('The "healthcheck" scope does not require any parameters.');
+          process.exit(0);
+        }
       }
     }
 }
@@ -191,6 +196,8 @@ function getSupportedParameters(scope) {
       return { name: 'required', format: 'optional' };
     case 'healthcheck':
       return {null:null};
+    case 'resetall':
+      return {null:null}
     // Προσθέστε περισσότερα cases για τα υπόλοιπα scopes...
     default:
       return {};
@@ -200,7 +207,7 @@ function getSupportedParameters(scope) {
 
 // Βασική συνάρτηση για τη διαχείριση της κλήσης από το CLI
 function handleCLICommand(scope, params, format) {
-  if (scope != "healthcheck"){
+  if (scope != "healthcheck" && scope != "resetall"){
     if (Object.keys(params).length === 0) {
       showSupportedParameters(scope);
       process.exit(0);
@@ -229,6 +236,9 @@ function handleCLICommand(scope, params, format) {
     case 'healthcheck':
       healthcheck();
       break;
+    case 'resetall':
+      resetall();
+      break;
     default:
       console.error('Invalid scope.');
       process.exit(1);
@@ -237,7 +247,7 @@ function handleCLICommand(scope, params, format) {
 
 
 function showSupportedParameters() {
-  const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname', 'healthcheck'];
+  const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname', 'healthcheck', 'resetall'];
 
   allScopes.forEach((scope) => {
     const supportedParams = getSupportedParameters(scope);
@@ -254,6 +264,7 @@ function showSupportedParameters() {
 const args = process.argv.slice(2); // Παίρνει τις παραμέτρους από τη γραμμή εντολών
 const [scope, ...rest] = args; // Η πρώτη παράμετρος είναι το scope, το υπόλοιπο είναι παράμετροι
 const params = parseParameters(rest); // Φτιάχνει ένα αντικείμενο με τις παραμέτρους
+console.log("test",rest.length);
 const formatIndex = rest.indexOf('--format');
 const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json'; // Αναζητά την παράμετρο --format
 
@@ -263,6 +274,21 @@ handleCLICommand(scope, params, format);
 function parseParameters(paramArray) {
   const params = {};
   let currentParam = null;
+
+  if (scope === 'healthcheck') {
+    // Αν το scope είναι 'healthcheck', αγνοήστε τυχόν παραμέτρους και εμφανίστε μόνο μήνυμα σφάλματος
+    if (paramArray.length > 0) {
+      console.error(`The 'healthcheck' scope does not require any parameters.`);
+      process.exit(1);
+    }
+    return params;
+  }else if (scope === 'resetall') {
+    if (paramArray.length > 0) {
+      console.error(`The 'resetall' scope does not require any parameters.`);
+      process.exit(1);
+    }
+    return params;
+  }
 
   paramArray.forEach((param) => {
     if (param.startsWith('--')) {
