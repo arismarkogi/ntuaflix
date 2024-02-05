@@ -1,82 +1,41 @@
 const express = require('express');
 const router = express.Router();
 const { titleObject, tqueryObject, gqueryObject, nameObject, nqueryObject} = require('./models.js');
-let converter = require('json-2-csv');
+const {sendResponse, isValidNameID, isValidTitleID, isValidgQuery, isValidnQuery, isValidtQuery, handleErrors } = require('./routes_helper.js');
+const { checkDatabaseConnection, executeReset } = require('./database/db.js');
 
 
 const titleobject = new titleObject();
 const nameobject = new nameObject();
 
-function handleErrors(res, error) {
-  console.error('Error:', error);
-
-  if (error.name === 'ValidationError') {
-    // Handle validation or casting errors
-    return res.status(400).json({ error: 'Bad request. Invalid parameters.' });
+router.get('/admin/healthcheck', async (req, res) => {
+  try {
+    // Check database connectivity
+    const connectionResult = await checkDatabaseConnection();
+    
+    if (connectionResult.status === 'OK') {
+      res.status(200).json(connectionResult);
+    } else {
+      res.status(500).json(connectionResult);
+    }
+  } catch (error) {
+    res.status(500).json({ status: 'failed', error: error.message });
   }
+});
 
-  if (error.name === 'NotFoundError') {
-    // Handle not found errors
-    return res.status(404).json({ error: 'Not available. Resource not found.' });
+router.post('/admin/resetall', async (req, res) => {
+  try {
+    // Execute reset function
+    await executeReset();
+
+    // Return success response
+    res.status(200).json({ status: 'OK' });
+  } catch (error) {
+    // Return failure response with error information
+    res.status(500).json({ status: 'failed', reason: error.message });
   }
+});
 
-  // For any other errors, return Internal Server Error
-  return res.status(500).json({ error: 'Internal server error.' });
-}
-
-// Example validation function (replace with your actual validation logic)
-function isValidTitleID(titleID) {
-  // Add your validation logic here
-  return typeof titleID === 'string' && titleID.length > 0;
-}
-
-// Function to validate tQueryObject
-function isValidtQuery(tQuery) {
-  return (tQuery && typeof tQuery === 'object' && 
-  typeof tQuery.titlePart === 'string' && tQuery.titlePart.trim().length > 0);
-}
-
-function isValidgQuery(gQuery) {
-  return (
-    gQuery &&
-    typeof gQuery === 'object' &&
-    typeof gQuery.qgenre === 'string' && gQuery.qgenre.trim().length > 0 &&
-    typeof gQuery.minrating === 'number' &&
-    (isNaN(gQuery.yrFrom) || gQuery.yrFrom === undefined || typeof gQuery.yrFrom === 'number' ) &&
-    (isNaN(gQuery.yrTo) || gQuery.yrTo === undefined || typeof gQuery.yrTo === 'number' )
-  );
-}
-
-function isValidNameID(nameID) {
-  // Add your validation logic here
-  return typeof nameID === 'string' && nameID.length > 0;
-}
-
-function isValidnQuery(nQuery) {
-  return (nQuery && typeof nQuery === 'object' && 
-  typeof nQuery.namePart === 'string' && nQuery.namePart.trim().length > 0);
-}
-
-
-function sendResponse(req, res, data) {
-  const format = req.query.format || 'json';
-
-  if (format.toLowerCase() === 'csv') {
-        console.log(data);
-        csvData = converter.json2csv(data)
-        res.setHeader('Content-Type', 'text/csv');
-        console.log(csvData);
-        res.status(200).send(csvData);
-      
-  } else if (format.toLowerCase() === 'json'){
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(data); // Default to JSON format
-  }else{
-    const validationError = new Error('Validation Error');
-    validationError.name = 'ValidationError';
-    throw validationError;
-  }
-}
 
 
 

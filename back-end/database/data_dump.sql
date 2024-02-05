@@ -1,4 +1,4 @@
-        
+
         INSERT INTO Person (nconst, primaryName, birthYear, deathYear, primaryProfession, knownForTitles, img_url_asset)
         VALUES ("nm0000019", "Federico Fellini", 1920, 1993, "writer,director,actor", "tt0071129,tt0047528,tt0050783,tt0056801", "https://image.tmdb.org/t/p/{width_variable}/jH2VnHAuI0UbTWsnrjMPro0fC9j.jpg");
         
