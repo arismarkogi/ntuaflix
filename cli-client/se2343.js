@@ -79,12 +79,25 @@ async function searchNameByPart(namePart) {
   }
 }
 
-async function healthcheck() {
+/*async function healthcheck() {
   try {
     const response = await axios.post(`${baseURL}/healthcheck`);
     handleResponse(response.data, format);
   } catch (error) {
     console.error(error);
+  }
+}*/
+async function healthcheck() {
+  try {
+    const response = await axios.get(`${baseURL}/admin/healthcheck`);
+    
+    if (response.status === 200) {
+      console.log('Server is healthy:', response.data);
+    } else {
+      console.error('Server health check failed:', response.data);
+    }
+  } catch (error) {
+    console.error('Error during health check:', error.message);
   }
 }
 
@@ -117,6 +130,7 @@ async function newAkas(filename) {
 
 
 const { Parser } = require('json2csv');
+const { help } = require('yargs');
 function handleResponse(data, format) {
   // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα ανάλογα με το format
   if (format === 'json') {
@@ -133,26 +147,34 @@ function handleError(error) {
   console.error(error);
 }
 
-
 function validateParameters(scope, params) {
-  const supportedParams = getSupportedParameters(scope);
+  if (scope != 'healthcheck'){
+    const supportedParams = getSupportedParameters(scope);
 
-  for (const paramName in params) {
-    const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
-    if (!(cleanParamName in supportedParams)) {
-      showSupportedParameters(scope);
-      process.exit(1);
+    for (const paramName in params) {
+      const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
+      if (!(cleanParamName in supportedParams)) {
+        showSupportedParameters(scope);
+        process.exit(1);
+      }
     }
-  }
 
-  // Έλεγχος για την ύπαρξη των απαιτούμενων παραμέτρων
-  for (const paramName in supportedParams) {
-    const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
-    if (supportedParams[paramName] === 'required' && !params[cleanParamName]) {
-      showSupportedParameters(scope);
-      process.exit(1);
+    // Έλεγχος για την ύπαρξη των απαιτούμενων παραμέτρων
+    for (const paramName in supportedParams) {
+      const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
+      if (supportedParams[paramName] === 'required' && !params[cleanParamName]) {
+        showSupportedParameters(scope);
+        process.exit(1);
+      }
     }
-  }
+  
+  } 
+  else {
+      if (args.length > 1) {
+        console.log('The "healthcheck" scope does not require any parameters.');
+        process.exit(0);
+      }
+    }
 }
 
 function getSupportedParameters(scope) {
@@ -167,6 +189,8 @@ function getSupportedParameters(scope) {
       return { nameID: 'required', format: 'optional' };
     case 'searchname':
       return { name: 'required', format: 'optional' };
+    case 'healthcheck':
+      return {null:null};
     // Προσθέστε περισσότερα cases για τα υπόλοιπα scopes...
     default:
       return {};
@@ -176,9 +200,11 @@ function getSupportedParameters(scope) {
 
 // Βασική συνάρτηση για τη διαχείριση της κλήσης από το CLI
 function handleCLICommand(scope, params, format) {
-  if (Object.keys(params).length === 0) {
-    showSupportedParameters(scope);
-    process.exit(0);
+  if (scope != "healthcheck"){
+    if (Object.keys(params).length === 0) {
+      showSupportedParameters(scope);
+      process.exit(0);
+    }
   }
 
   validateParameters(scope, params);
@@ -200,6 +226,9 @@ function handleCLICommand(scope, params, format) {
     case 'searchname':
       searchNameByPart(params.name,format);
       break;  
+    case 'healthcheck':
+      healthcheck();
+      break;
     default:
       console.error('Invalid scope.');
       process.exit(1);
@@ -208,7 +237,7 @@ function handleCLICommand(scope, params, format) {
 
 
 function showSupportedParameters() {
-  const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname'];
+  const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname', 'healthcheck'];
 
   allScopes.forEach((scope) => {
     const supportedParams = getSupportedParameters(scope);
@@ -227,6 +256,7 @@ const [scope, ...rest] = args; // Η πρώτη παράμετρος είναι 
 const params = parseParameters(rest); // Φτιάχνει ένα αντικείμενο με τις παραμέτρους
 const formatIndex = rest.indexOf('--format');
 const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json'; // Αναζητά την παράμετρο --format
+
 
 handleCLICommand(scope, params, format);
 
