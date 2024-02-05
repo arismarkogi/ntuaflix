@@ -26,14 +26,14 @@ function handleErrors(res, error) {
   // Function to validate tQueryObject
   function isValidtQuery(tQuery) {
     return (tQuery && typeof tQuery === 'object' && 
-    typeof tQuery.titlePart === 'string' && tQuery.titlePart.trim().length > 0);
+    typeof tQuery.titlePart === 'string');
   }
   
   function isValidgQuery(gQuery) {
     return (
       gQuery &&
       typeof gQuery === 'object' &&
-      typeof gQuery.qgenre === 'string' && gQuery.qgenre.trim().length > 0 &&
+      typeof gQuery.qgenre === 'string' &&
       typeof gQuery.minrating === 'number' &&
       (isNaN(gQuery.yrFrom) || gQuery.yrFrom === undefined || typeof gQuery.yrFrom === 'number' ) &&
       (isNaN(gQuery.yrTo) || gQuery.yrTo === undefined || typeof gQuery.yrTo === 'number' )
@@ -47,7 +47,7 @@ function handleErrors(res, error) {
   
   function isValidnQuery(nQuery) {
     return (nQuery && typeof nQuery === 'object' && 
-    typeof nQuery.namePart === 'string' && nQuery.namePart.trim().length > 0);
+    typeof nQuery.namePart === 'string');
   }
   
   
