@@ -14,7 +14,6 @@ async function getTitleById(titleID) {
     const response = await axios.get(`${baseURL}/title/${titleID}`);
     handleResponse(response.data, format);
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
-    //console.log(response.data);
   } catch (error) {
     console.error(error);
   }
@@ -28,7 +27,6 @@ async function searchTitleByPart(titlePart) {
     const response = await axios.get(`${baseURL}/searchtitle`, { data: requestBody });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
-    //console.log(response.data);
   } catch (error) {
     console.error(error);
   }
@@ -59,7 +57,6 @@ async function getNameById(nameID) {
     const response = await axios.get(`${baseURL}/name/${nameID}`);
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
-    //console.log(response.data);
   } catch (error) {
     console.error(error);
   }
@@ -70,7 +67,6 @@ async function searchNameByPart(namePart) {
     const requestBody = {
       "namePart" : namePart
     }
-    console.log(namePart);
     const response = await axios.get(`${baseURL}/searchname`,{ data:  requestBody  });
     // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
     handleResponse(response.data, format);
@@ -264,7 +260,6 @@ function showSupportedParameters() {
 const args = process.argv.slice(2); // Παίρνει τις παραμέτρους από τη γραμμή εντολών
 const [scope, ...rest] = args; // Η πρώτη παράμετρος είναι το scope, το υπόλοιπο είναι παράμετροι
 const params = parseParameters(rest); // Φτιάχνει ένα αντικείμενο με τις παραμέτρους
-console.log("test",rest.length);
 const formatIndex = rest.indexOf('--format');
 const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json'; // Αναζητά την παράμετρο --format
 
