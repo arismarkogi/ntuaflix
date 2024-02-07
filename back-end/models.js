@@ -38,10 +38,12 @@ class titleObject {
    async getByTitleID(titleID) {
     try {
       const titleDetails = await getTitleDetails(titleID);
+      console.log(titleDetails)
 
-      if(!titleDetails){
-        return null;
+      if(titleDetails.length === 0){
+        return null
       }
+      
       return new titleObject(
         titleDetails.titleID,
         titleDetails.type,
@@ -67,9 +69,7 @@ class titleObject {
     try{
       const titleListData = await searchTitle(tQueryObject.titlePart);
 
-      if(!titleListData){
-        return null;
-      }
+      
       // Map the title data to create an array of titleObject instances
       const titleList = titleListData.map(titleData => new titleObject(
       titleData.titleID,
@@ -98,9 +98,6 @@ class titleObject {
     try{
       const byGenreListData = await searchByGenre(gqueryObject.qgenre, gqueryObject.minrating, gqueryObject.yrFrom, gqueryObject.yrTo);
       
-      if(!byGenreListData){
-        return null;
-      }
       // Map the title data to create an array of titleObject instances
       const byGenreList = byGenreListData.map(byGenreData => new titleObject(
       byGenreData.titleID,
@@ -188,7 +185,7 @@ class titleObject {
 
       try {
         const nameDetails = await getNameDetails(nameID);
-        if(!nameDetails){
+        if(nameDetails.length === 0){
           return null;
         }
         return new nameObject(
@@ -212,9 +209,7 @@ class titleObject {
       try {
         const byNamePartListData = await searchName(nQueryobject.namePart);
         
-        if(!byNamePartListData){
-          return null;
-        }
+      
         const byNamePartList = byNamePartListData.map( nameDetails => new nameObject(
           nameDetails.nameID,
           nameDetails.name,
@@ -232,8 +227,6 @@ class titleObject {
       }
 
     }
-
-
   }
   
   class NameTitle {

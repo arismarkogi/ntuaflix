@@ -1,6 +1,6 @@
 // db.js
 const { createPool } = require('mysql');
-const { readFileSync, writeFileSync } = require('fs');
+const { readFileSync } = require('fs');
 const { resolve } = require('path');
 
 

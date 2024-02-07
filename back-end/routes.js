@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { titleObject, tqueryObject, gqueryObject, nameObject, nqueryObject} = require('./models.js');
-const {sendResponse, isValidNameID, isValidTitleID, isValidgQuery, isValidnQuery, isValidtQuery, handleErrors } = require('./routes_helper.js');
-const { checkDatabaseConnection, executeReset } = require('./database/db.js');
-
+const { sendResponse, isValidNameID, isValidTitleID, isValidgQuery, isValidnQuery, isValidtQuery, handleErrors } = require('./routes_helper.js');
+const { checkDatabaseConnection, executeReset} = require('./database/db.js');
 
 const titleobject = new titleObject();
 const nameobject = new nameObject();
@@ -23,6 +22,104 @@ router.get('/admin/healthcheck', async (req, res) => {
   }
 });
 
+router.post('/admin/titlebasics', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["tconst",	"titleType",	"primaryTitle",	"originalTitle",	"isAdult",	"startYear",	"endYear",	"runtimeMinutes",	"genres",	"img_url_asset"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router.post('/admin/titleakas', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["titleId",	"ordering", "title",	"region",	"language",	"types", "attributes", "isOriginalTitle"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router.post('/admin/namebasics', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["nconst",	"primaryName",	"birthYear",	"deathYear",	"primaryProfession",	"knownForTitles",	"img_url_asset"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router.post('/admin/titlecrew', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["tconst", "directors", "writers"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router.post('/admin/titleepisode', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["tconst", "parentTconst",	"seasonNumber",	"episodeNumber"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router.post('/admin/titleprincipals', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["tconst", "averageRating", "numVotes"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router.post('/admin/titleratings', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["tconst","ordering",	"nconst",	"category",	"job",	"characters",	"img_url_asset"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
 router.post('/admin/resetall', async (req, res) => {
   try {
     // Execute reset function
@@ -38,9 +135,6 @@ router.post('/admin/resetall', async (req, res) => {
 
 
 
-
-
-
 router.get('/title/:titleID', async (req, res) => {
 
   try {
@@ -53,7 +147,7 @@ router.get('/title/:titleID', async (req, res) => {
 
     const titleInstance = await titleobject.getByTitleID(titleID);
 
-    if (titleInstance.titleID === null) {
+    if (!titleInstance) {
       
       res.status(204).send(); // Success without data (empty response)
     } else {
@@ -118,21 +212,21 @@ router.get('/bygenre', async (req, res) => {
   router.get('/name/:nameID', async (req, res) => {
     try{
       const{nameID} = req.params;
-
       if(!isValidNameID(nameID)){
         const validationError = new Error('Validation Error');
         validationError.name = 'ValidationError';
         throw validationError;
       }
-
+      
       const nameInstance = await nameobject.getByNameID(nameID);
-
-    if (nameInstance.nameID === null) {
+      
+      if (!nameInstance) {
       
       res.status(204).send(); // Success without data (empty response)
-    } else {
-      sendResponse(req, res, nameInstance);
-    }
+      } 
+      else {
+        sendResponse(req, res, nameInstance);
+      }
     }
     catch (error){
       handleErrors(res, error);

@@ -26,9 +26,9 @@ const getTitleDetails = async (titleID) => {
   `;
 
   try {
-    const result = await executeQuery(query, titleID);
+    const result = await executeQuery(query, [titleID]);
     console.log('Fetched data:', result);
-    return result.length > 0 ? result[0] : null;
+    return result[0];
 
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -61,7 +61,7 @@ const searchTitle = async(titlePart)=>{
 try {
   const result = await executeQuery(query, titlePart);
   console.log('Fetched data:', result);
-  return result.length > 0 ? result : null;
+  return result;
 
 } catch (error) {
   console.error('Error fetching data:', error);
@@ -120,7 +120,7 @@ const searchByGenre = async (qgenre, minrating, yrFrom, yrTo) => {
 
     const result = await executeQuery(query, params);
     console.log('Fetched data:', result);
-    return result.length > 0 ? result : null;
+    return result;
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error; // Rethrow the error
@@ -150,7 +150,7 @@ const getNameDetails = async (nameID) => {
     try {
         const result = await executeQuery(query, [nameID]);
         console.log('Fetched data:', result);
-        return result.length > 0 ? result[0] : null;
+        return result;
 
         } catch (error) {
         console.error('Error fetching data:', error);
@@ -177,7 +177,7 @@ const searchName = async (namePart) => {
     try {
       const result = await executeQuery(query, [`${namePart}%`]); 
       console.log('Fetched data:', result);
-      return result.length > 0 ? result : null;
+      return result;
 
     } catch (error) {
       console.error('Error fetching data:', error);

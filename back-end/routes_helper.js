@@ -1,26 +1,44 @@
 let converter = require('json-2-csv');
 
-function handleErrors(res, error) {
-    console.error('Error:', error);
-  
-    if (error.name === 'ValidationError') {
-      // Handle validation or casting errors
-      return res.status(400).json({ error: 'Bad request. Invalid parameters.' });
+  function isValidTSV(req, reqFields){
+    
+    if (!req.headers['content-type'] || req.headers['content-type'] !== 'text/tab-separated-values') {
+      console.error(`Invalid file format. Please provide a TSV file.`);
+      return false;
     }
-  
-    if (error.name === 'NotFoundError') {
-      // Handle not found errors
-      return res.status(404).json({ error: 'Not available. Resource not found.' });
+
+    // Find the index of the first newline character
+    const firstNewlineIndex = req.body.indexOf('\n');
+
+    // Extract the header from the TSV data
+    const header = firstNewlineIndex !== -1 ? fileContent.substring(0, firstNewlineIndex) : req.body;
+
+    // Check if the request body has at least one row (header)
+    if (!header) {
+      console.error(`The TSV data is empty or does not contain a valid header.`);
+      return false;
     }
-  
-    // For any other errors, return Internal Server Error
-    return res.status(500).json({ error: 'Internal server error.' });
+
+    const headerFields = header.split('\t');
+
+    // Check if all required fields are present in the header
+    for (const field of reqFields) {
+      if (!headerFields.includes(field)) {
+        console.error(`Required field '${field}' is missing in the TSV data.`);
+        return false;
+      }
+    }
+
+    return true;
   }
-  
+
   // Example validation function (replace with your actual validation logic)
   function isValidTitleID(titleID) {
-    // Add your validation logic here
-    return typeof titleID === 'string' && titleID.length > 0;
+    // Regular expression pattern for the specified format
+    const pattern = /^tt\d{7}$/;
+  
+    // Check if the titleID matches the pattern
+    return typeof titleID === 'string' && pattern.test(titleID);
   }
   
   // Function to validate tQueryObject
@@ -41,8 +59,9 @@ function handleErrors(res, error) {
   }
   
   function isValidNameID(nameID) {
-    // Add your validation logic here
-    return typeof nameID === 'string' && nameID.length > 0;
+    const pattern = /^nm\d{7}$/;
+    // Check if the titleID matches the pattern
+    return typeof nameID === 'string' && pattern.test(nameID);
   }
   
   function isValidnQuery(nQuery) {
@@ -71,5 +90,16 @@ function handleErrors(res, error) {
     }
   }
 
+  function handleErrors(res, error) {
+    console.error('Error:', error);
+  
+    if (error.name === 'ValidationError') {
+      // Handle validation or casting errors
+      return res.status(400).json({ error: 'Bad request. Invalid parameters.' });
+    }
+  
+    // For any other errors, return Internal Server Error
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
 
-  module.exports = {sendResponse, isValidNameID, isValidTitleID, isValidgQuery, isValidnQuery, isValidtQuery, handleErrors };
+  module.exports = {isValidTSV, sendResponse, isValidNameID, isValidTitleID, isValidgQuery, isValidnQuery, isValidtQuery, handleErrors };
