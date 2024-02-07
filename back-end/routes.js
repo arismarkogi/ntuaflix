@@ -92,9 +92,10 @@ router.post('/admin/titleepisode', async (req, res) => {
   
 })
 
+
 router.post('/admin/titleprincipals', async (req, res) => {
   try{
-    if(!isValidTSV(req, ["tconst", "averageRating", "numVotes"])){
+    if(!isValidTSV(req, ["tconst","ordering",	"nconst",	"category",	"job",	"characters",	"img_url_asset"])){
       const validationError = new Error('Validation Error');
       validationError.name = 'ValidationError';
       throw validationError;
@@ -108,7 +109,7 @@ router.post('/admin/titleprincipals', async (req, res) => {
 
 router.post('/admin/titleratings', async (req, res) => {
   try{
-    if(!isValidTSV(req, ["tconst","ordering",	"nconst",	"category",	"job",	"characters",	"img_url_asset"])){
+    if(!isValidTSV(req, ["tconst", "averageRating", "numVotes"])){
       const validationError = new Error('Validation Error');
       validationError.name = 'ValidationError';
       throw validationError;
