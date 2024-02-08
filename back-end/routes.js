@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { titleObject, tqueryObject, gqueryObject, nameObject, nqueryObject} = require('./models.js');
-const { sendResponse, isValidNameID, isValidTitleID, isValidgQuery, isValidnQuery, isValidtQuery, handleErrors } = require('./routes_helper.js');
+const { sendResponse, isValidNameID, isValidTitleID, isValidgQuery, isValidnQuery, isValidtQuery,isValidTSV, handleErrors } = require('./routes_helper.js');
 const { checkDatabaseConnection, executeReset} = require('./database/db.js');
 
 const titleobject = new titleObject();
