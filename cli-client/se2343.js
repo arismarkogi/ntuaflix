@@ -106,18 +106,18 @@ async function resetall() {
   }
 }
 
-async function newTitles(filename) {
+async function newtitles(filename) {
   try {
-    const response = await axios.post(`${baseURL}/newtitles`, { filename });
+    const response = await axios.post(`${baseURL}/admin/upload/titlebasics`, { filename });
     handleResponse(response.data, format);
   } catch (error) {
     console.error(error);
   }
 }
 
-async function newAkas(filename) {
+async function newakas(filename) {
   try {
-    const response = await axios.post(`${baseURL}/newakas`, { filename });
+    const response = await axios.post(`${baseURL}/admin/upload/titleakas`, { filename });
     handleResponse(response.data, format);
   } catch (error) {
     console.error(error);
@@ -194,6 +194,10 @@ function getSupportedParameters(scope) {
       return {null:null};
     case 'resetall':
       return {null:null}
+    case 'newtitles':
+      return {filename : 'required', format: 'optional'};
+    case 'newakas':
+      return { filename: 'required', format: 'optional' };
     // Προσθέστε περισσότερα cases για τα υπόλοιπα scopes...
     default:
       return {};
@@ -235,6 +239,12 @@ function handleCLICommand(scope, params, format) {
     case 'resetall':
       resetall();
       break;
+    case 'newtitles':
+      newtitles(params.filename,format);
+      break;
+    case 'newakas':
+      newakas(params.filename, format);
+      break;
     default:
       console.error('Invalid scope.');
       process.exit(1);
@@ -243,7 +253,7 @@ function handleCLICommand(scope, params, format) {
 
 
 function showSupportedParameters() {
-  const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname', 'healthcheck', 'resetall'];
+  const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname', 'healthcheck', 'resetall','newtitles','newakas'];
 
   allScopes.forEach((scope) => {
     const supportedParams = getSupportedParameters(scope);
@@ -270,6 +280,7 @@ function parseParameters(paramArray) {
   const params = {};
   let currentParam = null;
 
+  /*
   if (scope === 'healthcheck') {
     // Αν το scope είναι 'healthcheck', αγνοήστε τυχόν παραμέτρους και εμφανίστε μόνο μήνυμα σφάλματος
     if (paramArray.length > 0) {
@@ -282,6 +293,23 @@ function parseParameters(paramArray) {
       console.error(`The 'resetall' scope does not require any parameters.`);
       process.exit(1);
     }
+    return params;
+  }*/
+
+  if (scope === 'healthcheck' || scope === 'resetall') {
+    // Αν το scope είναι 'healthcheck', αγνοήστε τυχόν παραμέτρους και εμφανίστε μόνο μήνυμα σφάλματος
+    if (paramArray.length > 0) {
+      console.error(`The '${scope}' scope does not require any parameters.`);
+      process.exit(1);
+    }
+    return params;
+  }else if (scope === 'newtitles' || scope === 'newakas' ) {
+    const filenameIndex = paramArray.indexOf('--filename');
+    if (filenameIndex === -1 || filenameIndex === paramArray.length - 1) {
+      console.error(`Value is missing for parameter --filename`);
+      process.exit(1);
+    }
+    params.filename = paramArray[filenameIndex + 1];
     return params;
   }
 
