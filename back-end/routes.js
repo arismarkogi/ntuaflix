@@ -22,7 +22,7 @@ router.get('/admin/healthcheck', async (req, res) => {
   }
 });
 
-router.post('/admin/titlebasics', async (req, res) => {
+router.post('/admin/upload/titlebasics', async (req, res) => {
   try{
     if(!isValidTSV(req, ["tconst",	"titleType",	"primaryTitle",	"originalTitle",	"isAdult",	"startYear",	"endYear",	"runtimeMinutes",	"genres",	"img_url_asset"])){
       const validationError = new Error('Validation Error');
@@ -36,7 +36,7 @@ router.post('/admin/titlebasics', async (req, res) => {
   
 })
 
-router.post('/admin/titleakas', async (req, res) => {
+router.post('/admin/upload/titleakas', async (req, res) => {
   try{
     if(!isValidTSV(req, ["titleId",	"ordering", "title",	"region",	"language",	"types", "attributes", "isOriginalTitle"])){
       const validationError = new Error('Validation Error');
@@ -50,7 +50,7 @@ router.post('/admin/titleakas', async (req, res) => {
   
 })
 
-router.post('/admin/namebasics', async (req, res) => {
+router.post('/admin/upload/namebasics', async (req, res) => {
   try{
     if(!isValidTSV(req, ["nconst",	"primaryName",	"birthYear",	"deathYear",	"primaryProfession",	"knownForTitles",	"img_url_asset"])){
       const validationError = new Error('Validation Error');
@@ -64,7 +64,7 @@ router.post('/admin/namebasics', async (req, res) => {
   
 })
 
-router.post('/admin/titlecrew', async (req, res) => {
+router.post('/admin/upload/titlecrew', async (req, res) => {
   try{
     if(!isValidTSV(req, ["tconst", "directors", "writers"])){
       const validationError = new Error('Validation Error');
@@ -78,7 +78,7 @@ router.post('/admin/titlecrew', async (req, res) => {
   
 })
 
-router.post('/admin/titleepisode', async (req, res) => {
+router.post('/admin/upload/titleepisode', async (req, res) => {
   try{
     if(!isValidTSV(req, ["tconst", "parentTconst",	"seasonNumber",	"episodeNumber"])){
       const validationError = new Error('Validation Error');
@@ -93,7 +93,7 @@ router.post('/admin/titleepisode', async (req, res) => {
 })
 
 
-router.post('/admin/titleprincipals', async (req, res) => {
+router.post('/admin/upload/titleprincipals', async (req, res) => {
   try{
     if(!isValidTSV(req, ["tconst","ordering",	"nconst",	"category",	"job",	"characters",	"img_url_asset"])){
       const validationError = new Error('Validation Error');
@@ -107,7 +107,7 @@ router.post('/admin/titleprincipals', async (req, res) => {
   
 })
 
-router.post('/admin/titleratings', async (req, res) => {
+router.post('/admin/upload/titleratings', async (req, res) => {
   try{
     if(!isValidTSV(req, ["tconst", "averageRating", "numVotes"])){
       const validationError = new Error('Validation Error');
