@@ -52,6 +52,7 @@ router.post('/admin/upload/titleakas', async (req, res) => {
 
 router.post('/admin/upload/namebasics', async (req, res) => {
   try{
+    console.log(req.body)
     if(!isValidTSV(req, ["nconst",	"primaryName",	"birthYear",	"deathYear",	"primaryProfession",	"knownForTitles",	"img_url_asset"])){
       const validationError = new Error('Validation Error');
       validationError.name = 'ValidationError';
@@ -65,6 +66,8 @@ router.post('/admin/upload/namebasics', async (req, res) => {
 })
 
 router.post('/admin/upload/titlecrew', async (req, res) => {
+  console.log(req.body)
+
   try{
     if(!isValidTSV(req, ["tconst", "directors", "writers"])){
       const validationError = new Error('Validation Error');

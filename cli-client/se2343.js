@@ -135,8 +135,10 @@ async function newakas(filename) {
 }
 
 async function newnames(filename) {
+  //console.log(filename);
   try {
     const fileContent = fs.readFileSync(filename, 'utf8');
+    console.log(fileContent);
     const response = await axios.post(`${baseURL}/admin/upload/namebasics`, fileContent, {
       headers: {
         'Content-Type': 'text/tab-separated-values'
@@ -149,6 +151,7 @@ async function newnames(filename) {
 }
 
 async function newcrew(filename) {
+  console.log(filename);
   try {
     const fileContent = fs.readFileSync(filename, 'utf8');
     const response = await axios.post(`${baseURL}/admin/upload/titlecrew`, fileContent, {
