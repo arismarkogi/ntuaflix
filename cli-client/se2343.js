@@ -108,7 +108,12 @@ async function resetall() {
 
 async function newtitles(filename) {
   try {
-    const response = await axios.post(`${baseURL}/admin/upload/titlebasics`, { filename });
+    const fileContent = fs.readFileSync(filename, 'utf8');
+    const response = await axios.post(`${baseURL}/admin/upload/titlebasics`, fileContent, {
+      headers: {
+        'Content-Type': 'text/tab-separated-values'
+      }
+    });
     handleResponse(response.data, format);
   } catch (error) {
     console.error(error);
@@ -117,13 +122,87 @@ async function newtitles(filename) {
 
 async function newakas(filename) {
   try {
-    const response = await axios.post(`${baseURL}/admin/upload/titleakas`, { filename });
+    const fileContent = fs.readFileSync(filename, 'utf8');
+    const response = await axios.post(`${baseURL}/admin/upload/titleakas`, fileContent, {
+      headers: {
+        'Content-Type': 'text/tab-separated-values'
+      }
+    });
     handleResponse(response.data, format);
   } catch (error) {
     console.error(error);
   }
 }
 
+async function newnames(filename) {
+  try {
+    const fileContent = fs.readFileSync(filename, 'utf8');
+    const response = await axios.post(`${baseURL}/admin/upload/namebasics`, fileContent, {
+      headers: {
+        'Content-Type': 'text/tab-separated-values'
+      }
+    });
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function newcrew(filename) {
+  try {
+    const fileContent = fs.readFileSync(filename, 'utf8');
+    const response = await axios.post(`${baseURL}/admin/upload/titlecrew`, fileContent, {
+      headers: {
+        'Content-Type': 'text/tab-separated-values'
+      }
+    });
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function newepisode(filename) {
+  try {
+    const fileContent = fs.readFileSync(filename, 'utf8');
+    const response = await axios.post(`${baseURL}/admin/upload/titleepisode`, fileContent, {
+      headers: {
+        'Content-Type': 'text/tab-separated-values'
+      }
+    });
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function newprincipals(filename) {
+  try {
+    const fileContent = fs.readFileSync(filename, 'utf8');
+    const response = await axios.post(`${baseURL}/admin/upload/titleprincipals`, fileContent, {
+      headers: {
+        'Content-Type': 'text/tab-separated-values'
+      }
+    });
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function newratings(filename) {
+  try {
+    const fileContent = fs.readFileSync(filename, 'utf8');
+    const response = await axios.post(`${baseURL}/admin/upload/titleratings`, fileContent, {
+      headers: {
+        'Content-Type': 'text/tab-separated-values'
+      }
+    });
+    handleResponse(response.data, format);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 const { Parser } = require('json2csv');
 const { help } = require('yargs');
@@ -167,11 +246,16 @@ function validateParameters(scope, params) {
   } 
   else {
       if (args.length > 1 && rest.length > 0) {
+        /*
         if(scope == 'resetall'){
           console.log('The "resetall" scope does not require any parameters.');
           process.exit(0);
         }else{
           console.log('The "healthcheck" scope does not require any parameters.');
+          process.exit(0);
+        }*/
+        if(scope == 'resetall' || scope == 'healthcheck'){
+          console.log(`The '${scope}' scope does not require any parameters.`);
           process.exit(0);
         }
       }
@@ -197,6 +281,16 @@ function getSupportedParameters(scope) {
     case 'newtitles':
       return {filename : 'required', format: 'optional'};
     case 'newakas':
+      return { filename: 'required', format: 'optional' };
+    case 'newnames':
+      return { filename: 'required', format: 'optional' };
+    case 'newcrew':
+      return { filename: 'required', format: 'optional' };
+    case 'newepisode':
+      return { filename: 'required', format: 'optional' };
+    case 'newprincipals':
+      return { filename: 'required', format: 'optional' };
+    case 'newratings':
       return { filename: 'required', format: 'optional' };
     // Προσθέστε περισσότερα cases για τα υπόλοιπα scopes...
     default:
@@ -245,6 +339,21 @@ function handleCLICommand(scope, params, format) {
     case 'newakas':
       newakas(params.filename, format);
       break;
+    case 'newnames':
+      newnames(params.filename,format);
+      break;
+    case 'newcrew':
+      newcrew(params.filename,format);
+      break;
+    case 'newepisode':
+      newepisode(params.filename,format);
+      break;
+    case 'newprincipals':
+      newprincipals(params.filename,format);
+      break;
+    case 'newratings':
+      newratings(params.filename,format);
+      break;
     default:
       console.error('Invalid scope.');
       process.exit(1);
@@ -253,8 +362,9 @@ function handleCLICommand(scope, params, format) {
 
 
 function showSupportedParameters() {
-  const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname', 'healthcheck', 'resetall','newtitles','newakas'];
-
+  const allScopes = ['title', 'searchtitle', 'bygenre', 'name', 'searchname', 'healthcheck', 'resetall','newtitles','newakas','newnames','newcrew','newepisode',
+                     'newprincipals','newratings'];
+                     
   allScopes.forEach((scope) => {
     const supportedParams = getSupportedParameters(scope);
     console.log(`Supported parameters for scope '${scope}':`);
@@ -303,7 +413,7 @@ function parseParameters(paramArray) {
       process.exit(1);
     }
     return params;
-  }else if (scope === 'newtitles' || scope === 'newakas' ) {
+  }else if (scope === 'newtitles' || scope === 'newakas' || scope === 'newnames' || scope === 'newcrew' || scope === 'newepisode' || scope === 'newepisode' || scope === 'newprincipals' || scope === 'newratings') {
     const filenameIndex = paramArray.indexOf('--filename');
     if (filenameIndex === -1 || filenameIndex === paramArray.length - 1) {
       console.error(`Value is missing for parameter --filename`);
@@ -329,7 +439,6 @@ function parseParameters(paramArray) {
       process.exit(1);
     }
   }
-
   return params;
 }
 
