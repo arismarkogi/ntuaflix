@@ -1,355 +1,312 @@
-class titleObject {
-    constructor(titleID, type, originalTitle, titlePoster, startYear, endYear, genres, titleAkas, principals, rating) {
-      this.titleID = titleID;
-      this.type = type;
-      this.originalTitle = originalTitle;
-      this.titlePoster = titlePoster;
-      this.startYear = startYear;
-      this.endYear = endYear;
-      this.genres = genres;
-      this.titleAkas = titleAkas;
-      this.principals = principals;
-      this.rating = rating;
+User
+In an http request if a send a body to a request that does not require nody should i throw an errorlike 400 or not
+ChatGPT
+In general, it is a good practice to adhere to the principles of the HTTP protocol. According to the HTTP/1.1 specification (RFC 7231), when a server receives a request that is not valid, it should respond with an appropriate status code, and 400 Bad Request is commonly used for cases where the server cannot or will not process the request due to a client error.
+
+If a server receives a request with a body when the request method (e.g., GET or DELETE) does not expect a body, it can be considered a client error, and responding with a 400 Bad Request status code would be a suitable way to indicate this issue.
+
+So, yes, it is reasonable to throw a 400 Bad Request error if a request contains a body that is not expected or valid for the specific HTTP method. This helps in providing clear and standardized communication between clients and servers.
+
+User
+if there is a POST method but a body is not required should i throw an error?
+ChatGPT
+In the case of a POST request where the server does not expect a request body, it is generally acceptable to handle the request even if a body is included, as long as the body is ignored. In such situations, you may choose not to throw an error, and simply proceed with processing the request as if there were no body.
+
+HTTP does not explicitly mandate that a request body must be present for a POST request. The absence of a request body is entirely valid, and servers should handle it gracefully.
+
+If the request body does not impact the processing of the request, it's usually best to avoid treating it as an error. However, if the presence of a body in a POST request is considered problematic or if it violates the expected behavior of the API, you may choose to respond with a 400 Bad Request to indicate that the request is not properly formatted. This decision depends on the specific requirements and design of your API.
+
+User
+const express = require('express');
+const router_admin = express.Router();
+const { isValidTSV, handleErrors } = require('./routes_helper.js');
+const { checkDatabaseConnection, executeReset} = require('./database/db.js');
+const bodyParser = require('body-parser')
+const {insertTitleBasics, insertTitleAkas, insertNameBasics, insertTitleCrew, insertTitleEpisode, insertTitlePrincipals, insertTitleRatings} = require('./database/dbInserts.js')
+
+router_admin.use(bodyParser.text({ type: 'text/tab-separated-values' }));
+
+
+
+router_admin.get('/admin/healthcheck', async (req, res) => {
+  try {
+    // Check database connectivity
+    const connectionResult = await checkDatabaseConnection();
+    
+    if (connectionResult.status === 'OK') {
+      res.status(200).json(connectionResult);
+    } else {
+      res.status(500).json(connectionResult);
     }
+  } catch (error) {
+    res.status(500).json({ status: 'failed', error: error.message });
+  }
+});
 
-    getByTitleID(titleID){
-      
-      
-
-      return titleObj
+router_admin.post('/admin/upload/titlebasics', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["tconst",	"titleType",	"primaryTitle",	"originalTitle",	"isAdult",	"startYear",	"endYear",	"runtimeMinutes",	"genres",	"img_url_asset"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
     }
-
-
+    await insertTitleBasics(req.body);
+    res.status(200).json({ status: 'OK' });
+  }
+  catch (error){
+    handleErrors(res, error);
   }
   
-  class Genre {
-    constructor(genreTitle) {
-      this.genreTitle = genreTitle;
-    }
-  }
-  
-  class TitleAka {
-    constructor(akaTitle, regionAbbrev) {
-      this.akaTitle = akaTitle;
-      this.regionAbbrev = regionAbbrev;
-    }
-  }
-  
-  class TitlePrincipal {
-    constructor(nameID, name, category) {
-      this.nameID = nameID;
-      this.name = name;
-      this.category = category;
-    }
-  }
-  
-  class Rating {
-    constructor(avRating, nVotes) {
-      this.avRating = avRating;
-      this.nVotes = nVotes;
-    }
-  }
+})
 
-  class tQueryObject {
-    constructor(titlePart) {
-      this.titlePart = titlePart;
+router_admin.post('/admin/upload/titleakas', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["titleId",	"ordering", "title",	"region",	"language",	"types", "attributes", "isOriginalTitle"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
     }
+    await insertTitleAkas(req.body);
+    res.status(200).json({ status: 'OK' });
   }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router_admin.post('/admin/upload/namebasics', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["nconst",	"primaryName",	"birthYear",	"deathYear",	"primaryProfession",	"knownForTitles",	"img_url_asset"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+    await insertNameBasics(req.body);
+    res.status(200).json({ status: 'OK' });
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router_admin.post('/admin/upload/titlecrew', async (req, res) => {
+
+  try{
+    if(!isValidTSV(req, ["tconst", "directors", "writers"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+    await insertTitleCrew(req.body);
+    res.status(200).json({ status: 'OK' });
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router_admin.post('/admin/upload/titleepisode', async (req, res) => {
+
+  console.log(req.body)
+  try{
+    if(!isValidTSV(req, ["tconst", "parentTconst",	"seasonNumber",	"episodeNumber"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+    await insertTitleEpisode(req.body);
+    res.status(200).json({ status: 'OK' });
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+
+router_admin.post('/admin/upload/titleprincipals', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["tconst", "ordering", "nconst", "category", "job",	"characters", "img_url_asset"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+    await insertTitlePrincipals(req.body);
+    res.status(200).json({ status: 'OK' });
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router_admin.post('/admin/upload/titleratings', async (req, res) => {
+  try{
+    if(!isValidTSV(req, ["tconst", "averageRating", "numVotes"])){
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+    await insertTitleRatings(req.body);
+    res.status(200).json({ status: 'OK' });
+  }
+  catch (error){
+    handleErrors(res, error);
+  }
+  
+})
+
+router_admin.post('/admin/resetall', async (req, res) => {
+  try {
+    // Execute reset function
+    await executeReset();
+
+    // Return success response
+    res.status(200).json({ status: 'OK' });
+  } catch (error) {
+    // Return failure response with error information
+    res.status(500).json({ status: 'failed', reason: error.message });
+  }
+});
+
+module.exports = router_admin; 
+
+
+how should i do this in the healtcheck and resetall endpoints
+ChatGPT
+In the healthcheck and resetall endpoints, you can handle the cases where a request body is provided even though it's not required. In these cases, you can choose to either ignore the request body or respond with an appropriate error status code, such as 400 Bad Request.
+
+Here's an example modification for the healthcheck endpoint:
+
+javascript
+Copy code
+router_admin.get('/admin/healthcheck', async (req, res) => {
+  try {
+    // Check if there is a request body and log a warning if present
+    if (req.body) {
+      console.warn('Warning: Unexpected request body in healthcheck endpoint.');
+    }
+
+    // Check database connectivity
+    const connectionResult = await checkDatabaseConnection();
+
+    if (connectionResult.status === 'OK') {
+      res.status(200).json(connectionResult);
+    } else {
+      res.status(500).json(connectionResult);
+    }
+  } catch (error) {
+    res.status(500).json({ status: 'failed', error: error.message });
+  }
+});
+And for the resetall endpoint:
+
+javascript
+Copy code
+router_admin.post('/admin/resetall', async (req, res) => {
+  try {
+    // Check if there is a request body and log a warning if present
+    if (req.body) {
+      console.warn('Warning: Unexpected request body in resetall endpoint.');
+    }
+
+    // Execute reset function
+    await executeReset();
+
+    // Return success response
+    res.status(200).json({ status: 'OK' });
+  } catch (error) {
+    // Return failure response with error information
+    res.status(500).json({ status: 'failed', reason: error.message });
+  }
+});
+These modifications will log a warning to the console if a request body is present, but they will still proceed with the intended functionality of the endpoints. If you want to enforce a stricter approach and consider any request body as an error, you can respond with a 400 Bad Request status code in these cases.
+
+User
+my problem is that even if there is no body if the request is JSON i will have an error because of the parser
+ChatGPT
+I see, in that case, you can modify your healthcheck and resetall endpoints to handle the situation where a JSON body is sent, even if it's not required. You can check the Content-Type header of the request to determine if it's JSON and handle it accordingly. Here's an example:
+
+javascript
+Copy code
+router_admin.get('/admin/healthcheck', async (req, res) => {
+  try {
+    // Check if Content-Type is JSON and log a warning if present
+    if (req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
+      console.warn('Warning: Unexpected JSON request body in healthcheck endpoint.');
+    }
+
+    // Check database connectivity
+    const connectionResult = await checkDatabaseConnection();
+
+    if (connectionResult.status === 'OK') {
+      res.status(200).json(connectionResult);
+    } else {
+      res.status(500).json(connectionResult);
+    }
+  } catch (error) {
+    res.status(500).json({ status: 'failed', error: error.message });
+  }
+});
+
+router_admin.post('/admin/resetall', async (req, res) => {
+  try {
+    // Check if Content-Type is JSON and log a warning if present
+    if (req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
+      console.warn('Warning: Unexpected JSON request body in resetall endpoint.');
+    }
+
+    // Execute reset function
+    await executeReset();
+
+    // Return success response
+    res.status(200).json({ status: 'OK' });
+  } catch (error) {
+    // Return failure response with error information
+    res.status(500).json({ status: 'failed', reason: error.message });
+  }
+});
+This modification checks the Content-Type header and logs a warning if it indicates a JSON request. This way, you can handle situations where a JSON body is sent even if it's not required for these specific endpoints. Adjust the logic according to your specific needs and error handling preferences.
+
+User
+router_admin.use(bodyParser.text({ type: 'text/tab-separated-values' }));
  
 
-const getTitleDetails = async (titleID) => {
-  const query = `
-  SELECT 
-  tb.tconst AS titleID,
-  tb.titleType AS type,
-  tb.originalTitle,
-  tb.img_url_asset AS titlePoster,
-  tb.startYear,
-  tb.endYear,
-  tb.genres,
-  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.region, 'N/A'), ':', IFNULL(ta.title, 'N/A')) SEPARATOR ',') AS akaTitlesWithRegion,
-  GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), ':', IFNULL(p.primaryName, 'N/A'), ':', IFNULL(tp.category, 'N/A')) SEPARATOR ',') AS castAndCrew,
-  COALESCE(tr.averageRating, 0) AS avRating,
-  COALESCE(tr.numVotes, 0) AS nVotes
-  FROM TitleBasics tb
-  JOIN TitleAkas ta ON tb.tconst = ta.titleId
-  JOIN TitlePrincipal tp ON tb.tconst = tp.tconst
-  JOIN Person p ON tp.nconst = p.nconst
-  LEFT JOIN TitleRating tr ON tb.tconst = tr.tconst  
-  WHERE tb.tconst = ?
-  `;
+the parser throws the error here
+ChatGPT
+I see, if the issue is with the body parser throwing an error when a JSON body is sent to endpoints that expect TSV (tab-separated values), you can update the middleware configuration to handle both JSON and TSV.
 
+You can modify the body parser middleware to handle both JSON and TSV by using the express.raw middleware to receive the raw buffer and then manually parsing it based on the content type. Here's an example:
+
+javascript
+Copy code
+router_admin.use(bodyParser.raw({ type: ['text/tab-separated-values', 'application/json'] }));
+
+router_admin.post('/admin/upload/titlebasics', async (req, res) => {
   try {
-    const result = await executeQuery(query, titleID);
-    console.log('Fetched data:', result);
-    return result[0]; // Return the result
+    let data;
+
+    if (req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
+      // If JSON, parse the JSON data
+      data = JSON.parse(req.body.toString());
+    } else {
+      // If TSV, use the raw buffer as-is
+      data = req.body.toString();
+    }
+
+    if (!isValidTSV(data, ["tconst", "titleType", "primaryTitle", "originalTitle", "isAdult", "startYear", "endYear", "runtimeMinutes", "genres", "img_url_asset"])) {
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
+
+    await insertTitleBasics(data);
+    res.status(200).json({ status: 'OK' });
   } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error; // Rethrow the error
+    handleErrors(res, error);
   }
-}; 
-
-i want to implement the method  in the titleObject
-ChatGPT
-It seems like you want to implement a method getByTitleID in the titleObject class that fetches title details based on the titleID. You can do this by calling the getTitleDetails function you've defined. Here's how you can implement it:
-
-javascript
-Copy code
-class titleObject {
-  // ... (your existing constructor)
-
-  async getByTitleID(titleID) {
-    try {
-      const titleDetails = await getTitleDetails(titleID);
-      return new titleObject(
-        titleDetails.titleID,
-        titleDetails.type,
-        titleDetails.originalTitle,
-        titleDetails.titlePoster,
-        titleDetails.startYear,
-        titleDetails.endYear,
-        titleDetails.genres,
-        titleDetails.akaTitlesWithRegion.map((akaTitle) => {
-          const [title, regionAbbrev] = akaTitle.split(':');
-          return new TitleAka(title, regionAbbrev);
-        }),
-        titleDetails.castAndCrew.map((castCrew) => {
-          const [nameID, name, category] = castCrew.split(':');
-          return new TitlePrincipal(nameID, name, category);
-        }),
-        new Rating(titleDetails.avRating, titleDetails.nVotes)
-      );
-    } catch (error) {
-      console.error('Error fetching title details:', error);
-      throw error;
-    }
-  }
-}
-
-// Example usage:
-const titleID = 'yourTitleID';
-const titleObj = new titleObject();
-titleObj.getByTitleID(titleID).then((result) => {
-  console.log('Title details:', result);
-}).catch((error) => {
-  console.error('Error:', error);
 });
-This assumes that the getTitleDetails function returns the required details in the expected format. The getByTitleID method asynchronously fetches title details and constructs a new titleObject instance using the retrieved data. Make sure to adjust the code according to your actual data structures and requirements.
-
-User
-class Genre {
-    constructor(genreTitle) {
-      this.genreTitle = genreTitle;
-    }
-  } 
-
-the genres field must be a list of these 
-ChatGPT
-Certainly! If the genres field in your titleObject class is meant to be a list of Genre instances, you can modify the constructor to accept an array of Genre objects. Here's the updated titleObject class:
-
-javascript
-Copy code
-class titleObject {
-  constructor(
-    titleID,
-    type,
-    originalTitle,
-    titlePoster,
-    startYear,
-    endYear,
-    genres,
-    titleAkas,
-    principals,
-    rating
-  ) {
-    this.titleID = titleID;
-    this.type = type;
-    this.originalTitle = originalTitle;
-    this.titlePoster = titlePoster;
-    this.startYear = startYear;
-    this.endYear = endYear;
-    this.genres = genres; // Now expects an array of Genre objects
-    this.titleAkas = titleAkas;
-    this.principals = principals;
-    this.rating = rating;
-  }
-
-  async getByTitleID(titleID) {
-    try {
-      const titleDetails = await getTitleDetails(titleID);
-      return new titleObject(
-        titleDetails.titleID,
-        titleDetails.type,
-        titleDetails.originalTitle,
-        titleDetails.titlePoster,
-        titleDetails.startYear,
-        titleDetails.endYear,
-        titleDetails.genres.map((genreTitle) => new Genre(genreTitle)),
-        titleDetails.akaTitlesWithRegion.map(
-          (akaTitle) => new TitleAka(akaTitle)
-        ),
-        titleDetails.castAndCrew.map(
-          (castCrew) =>
-            new TitlePrincipal(
-              castCrew.nameID,
-              castCrew.name,
-              castCrew.category
-            )
-        ),
-        new Rating(titleDetails.avRating, titleDetails.nVotes)
-      );
-    } catch (error) {
-      console.error('Error fetching title details:', error);
-      throw error;
-    }
-  }
-}
-Now, when creating a new titleObject instance or fetching details using getByTitleID, you should pass an array of Genre objects for the genres field. This ensures that each genre is represented by a Genre instance.
-
-User
-The titleAkas and TitlePrincipals is a list of such objects like gernes
-
-2 / 2
-
-ChatGPT
-I see, if titleAkas and TitlePrincipals are also meant to be lists of objects similar to Genre, you can modify the constructor accordingly. Here's the updated titleObject class:
-
-javascript
-Copy code
-class titleObject {
-  constructor(
-    titleID,
-    type,
-    originalTitle,
-    titlePoster,
-    startYear,
-    endYear,
-    genres,
-    titleAkas,
-    principals,
-    rating
-  ) {
-    this.titleID = titleID;
-    this.type = type;
-    this.originalTitle = originalTitle;
-    this.titlePoster = titlePoster;
-    this.startYear = startYear;
-    this.endYear = endYear;
-    this.genres = genres; // Now expects an array of Genre objects
-    this.titleAkas = titleAkas.map(
-      (aka) => new TitleAka(aka.akaTitle, aka.regionAbbrev)
-    );
-    this.principals = principals.map(
-      (principal) =>
-        new TitlePrincipal(principal.nameID, principal.name, principal.category)
-    );
-    this.rating = rating;
-  }
-
-  async getByTitleID(titleID) {
-    try {
-      const titleDetails = await getTitleDetails(titleID);
-      return new titleObject(
-        titleDetails.titleID,
-        titleDetails.type,
-        titleDetails.originalTitle,
-        titleDetails.titlePoster,
-        titleDetails.startYear,
-        titleDetails.endYear,
-        titleDetails.genres.map((genreTitle) => new Genre(genreTitle)),
-        titleDetails.akaTitlesWithRegion.map(
-          (akaTitle) => new TitleAka(akaTitle)
-        ),
-        titleDetails.castAndCrew.map(
-          (castCrew) =>
-            new TitlePrincipal(
-              castCrew.nameID,
-              castCrew.name,
-              castCrew.category
-            )
-        ),
-        new Rating(titleDetails.avRating, titleDetails.nVotes)
-      );
-    } catch (error) {
-      console.error('Error fetching title details:', error);
-      throw error;
-    }
-  }
-}
-Now, the titleAkas and principals fields are expected to be arrays of TitleAka and TitlePrincipal objects, respectively. Adjust your data accordingly when creating instances of titleObject.
-
-User
-look at the structure in the query. 
-The list of genres is comma seperated and the Principals and TitleAkas are comma seperated objects of Principal and TitleAka where each corespondinf fiels is separated with :
-ChatGPT
-I see, in that case, you should adjust the code accordingly to parse the comma-separated values and create instances of Genre, TitleAka, and TitlePrincipal. Here's the updated code:
-
-javascript
-Copy code
-class titleObject {
-  constructor(
-    titleID,
-    type,
-    originalTitle,
-    titlePoster,
-    startYear,
-    endYear,
-    genres,
-    titleAkas,
-    principals,
-    rating
-  ) {
-    this.titleID = titleID;
-    this.type = type;
-    this.originalTitle = originalTitle;
-    this.titlePoster = titlePoster;
-    this.startYear = startYear;
-    this.endYear = endYear;
-    this.genres = genres.split(',').map((genreTitle) => new Genre(genreTitle.trim()));
-    this.titleAkas = titleAkas.split(',').map((aka) => {
-      const [akaTitle, regionAbbrev] = aka.split(':');
-      return new TitleAka(akaTitle.trim(), regionAbbrev.trim());
-    });
-    this.principals = principals.split(',').map((principal) => {
-      const [nameID, name, category] = principal.split(':');
-      return new TitlePrincipal(nameID.trim(), name.trim(), category.trim());
-    });
-    this.rating = rating;
-  }
-
-  async getByTitleID(titleID) {
-    try {
-      const titleDetails = await getTitleDetails(titleID);
-      return new titleObject(
-        titleDetails.titleID,
-        titleDetails.type,
-        titleDetails.originalTitle,
-        titleDetails.titlePoster,
-        titleDetails.startYear,
-        titleDetails.endYear,
-        titleDetails.genres,
-        titleDetails.akaTitlesWithRegion,
-        titleDetails.castAndCrew,
-        new Rating(titleDetails.avRating, titleDetails.nVotes)
-      );
-    } catch (error) {
-      console.error('Error fetching title details:', error);
-      throw error;
-    }
-  }
-}
-This assumes that the genres, titleAkas, and principals fields in the database query result are strings with comma-separated values. The split(',') method is used to separate these values, and then map is used to create instances of the corresponding objects. Adjust the code based on the actual structure of your data.
-
-User
-is the cosntructor a special method in js?
-ChatGPT
-Yes, in JavaScript, the constructor is a special method that is automatically called when an instance of a class is created. It is used to initialize the object's properties and perform any setup that needs to happen when an instance is created.
-
-Here's a brief overview of the constructor method:
-
-The constructor method is defined inside a class and has the special name constructor.
-It is called automatically when a new instance of the class is created using the new keyword.
-The constructor method is used to initialize the properties of the object being created.
-It can take parameters to receive values that are used during the initialization process.
-If a class does not have a constructor method, a default constructor is provided implicitly.
-In your example, the titleObject class has a constructor method that initializes various properties based on the values passed to it. This is a common pattern when working with classes in JavaScript.
+This modification uses bodyParser.raw to handle both TSV and JSON types. If the content type is JSON, it parses the raw buffer as JSON; otherwise, it treats the buffer as TSV. Adjust this logic for other endpoints as needed.

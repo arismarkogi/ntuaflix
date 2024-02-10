@@ -1,19 +1,19 @@
 {
     "answers": {
-        "phase": "coding",
-        "action": "source code authoring", 
-        "scope": "backend",
-        "action experience": "little",
-        "prog lang": "js", 
+        "phase": "coding", 
+        "action": "source code authoring", ,
+        "scope": "api",
+        "action experience": "fair",
+        "prog lang": "js-node", 
         "other prog lang": "<fill in>",
         "tool": "chat gpt 3.x",
         "other tool": "<fill in>",
         "tool option": "free",
         "tool experience": "enough",
-        "time allocated (h)": "0.3",
+        "time allocated (h)": "0.2",
         "time saved estimate (h)": "1", 
-        "quality of ai help": "minor modifications needed",
-        "generic feeling": "great as-is", 
+        "quality of ai help": "minor modifications needed", 
+        "generic feeling": "great in the future",
         "notes": "<fill in>"
     }
 }
