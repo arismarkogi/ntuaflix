@@ -1,9 +1,17 @@
 // db.js
+const mysql = require('mysql');
 const { createPool } = require('mysql2/promise');
-const { exec } = require('child_process');
 
+// Create pool using mysql module
+const mysqlPool = mysql.createPool({
+  host: 'localhost',
+  user: 'ntuaflix_user',
+  password: '12345Ab$',
+  database: 'ntuaflix_db'
+});
 
-const pool = createPool({
+// Create pool using mysql2/promise module
+const mysql2Pool = createPool({
   host: 'localhost',
   user: 'ntuaflix_user',
   password: '12345Ab$',
@@ -12,7 +20,7 @@ const pool = createPool({
 
 const executeQuery = (query, values) => {
   return new Promise((resolve, reject) => {
-    pool.query(query, values, (error, results) => {
+    mysqlPool.query(query, values, (error, results) => {
       if (error) {
         reject(error);
       } else {
@@ -22,11 +30,15 @@ const executeQuery = (query, values) => {
   });
 };
 
+const getConnectionString = async () => {
+  return `host: localhost, user: ntuaflix_user, database: ntuaflix_db`;
+};
+
 const checkDatabaseConnection = async () => {
   try {
-    const queryResult = await executeQuery('SELECT 1', null);
-    
-    if (queryResult && queryResult.length > 0 && queryResult[0]['1'] === 1) {
+    const queryResult = await mysqlPool.query('SELECT 1');
+
+    if (queryResult) {
       return { status: 'OK', dataconnection: await getConnectionString() };
     } else {
       return { status: 'failed', dataconnection: await getConnectionString() };
@@ -36,9 +48,7 @@ const checkDatabaseConnection = async () => {
   }
 };
 
-const getConnectionString = async () => {
-  return `host: ${pool.config.connectionConfig.host}, user: ${pool.config.connectionConfig.user}, database: ${pool.config.connectionConfig.database}`;
-};
+
 const executeReset = async () => {
   try {
     // Drop the database
@@ -49,10 +59,11 @@ const executeReset = async () => {
       authPlugins: {
         mysql_native_password: () => require('mysql2/lib/auth/mysql_native_password')
       },
-      protocol: 'mysql_native_password',
+      protocol: 'mysql_native_password'
     });
     
-
+    await newPool.query("DROP DATABASE IF EXISTS ntuaflix_db");
+    await newPool.query("CREATE DATABASE ntuaflix_db");
     // Create the restore command
     const command = `mysql -h localhost -u ntuaflix_user -p12345Ab$ ntuaflix_db < database/database_dump.sql`;
 
@@ -81,4 +92,4 @@ const executeReset = async () => {
 
 
 
-module.exports = { executeQuery, checkDatabaseConnection, executeReset, pool };
+module.exports = { executeQuery, checkDatabaseConnection, executeReset, mysqlPool, mysql2Pool };

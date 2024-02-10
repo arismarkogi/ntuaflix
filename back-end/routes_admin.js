@@ -7,8 +7,6 @@ const {insertTitleBasics, insertTitleAkas, insertNameBasics, insertTitleCrew, in
 
 router_admin.use(bodyParser.text({ type: 'text/tab-separated-values' }));
 
-
-
 router_admin.get('/admin/healthcheck', async (req, res) => {
   try {
     // Check database connectivity
