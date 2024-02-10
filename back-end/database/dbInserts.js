@@ -112,7 +112,7 @@ const insertTitleCrew = async (tsvData) => {
         
         const tconstValue = tconst === '\\N' ? null : tconst;
         
-        if(tconstValue && parentTconstValue){
+        if(tconstValue){
             const writersValue = writers === '\\N' ? null : writers;
             const directorsValue = directors === '\\N' ? null : directors;
         values.push([tconstValue, directorsValue, writersValue]);
