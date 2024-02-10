@@ -1,4 +1,4 @@
-const { getTitleDetails, searchTitle, searchByGenre, searchName, getNameDetails } = require('./dbQueries.js');
+const { getTitleDetails, searchTitle, searchByGenre, searchName, getNameDetails } = require('./database/dbQueries.js');
 
 class titleObject {
   constructor(
@@ -38,12 +38,11 @@ class titleObject {
    async getByTitleID(titleID) {
     try {
       const titleDetails = await getTitleDetails(titleID);
-      console.log(titleDetails)
 
-      if(titleDetails.length === 0){
-        return null
+      if(!titleDetails || !titleDetails.titleID){
+        return null;
       }
-      
+
       return new titleObject(
         titleDetails.titleID,
         titleDetails.type,
@@ -185,9 +184,11 @@ class titleObject {
 
       try {
         const nameDetails = await getNameDetails(nameID);
-        if(nameDetails.length === 0){
+        
+        if(!nameDetails || !nameDetails.nameID){
           return null;
         }
+
         return new nameObject(
           nameDetails.nameID,
           nameDetails.name,
@@ -219,7 +220,7 @@ class titleObject {
           nameDetails.profession,
           nameDetails.nameTitles
         ));
-        console.log(byNamePartList);
+
         return byNamePartList;
       } catch (error) {
         console.error('Error fetching byNamePartList details:', error);

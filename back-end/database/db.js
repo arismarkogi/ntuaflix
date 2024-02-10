@@ -1,18 +1,13 @@
 // db.js
-const { createPool } = require('mysql');
-const { readFileSync } = require('fs');
-const { resolve } = require('path');
+const { createPool } = require('mysql2/promise');
+const { exec } = require('child_process');
 
 
 const pool = createPool({
   host: 'localhost',
   user: 'ntuaflix_user',
   password: '12345Ab$',
-  database: 'ntuaflix_db',
-  authPlugins: {
-    mysql_native_password: () => require('mysql2/lib/auth/mysql_native_password')
-  },
-  protocol: 'mysql_native_password',
+  database: 'ntuaflix_db'
 });
 
 const executeQuery = (query, values) => {
@@ -57,51 +52,24 @@ const executeReset = async () => {
       protocol: 'mysql_native_password',
     });
     
-    await newPool.query('DROP DATABASE IF EXISTS ntuaflix_db');
-    await newPool.query('CREATE DATABASE ntuaflix_db')
 
-    // Use absolute paths for SQL files
-    const tablesSqlPath = resolve(__dirname, 'tables.sql');
-    const dataDumpSqlPath = resolve(__dirname, 'data_dump.sql');
+    // Create the restore command
+    const command = `mysql -h localhost -u ntuaflix_user -p12345Ab$ ntuaflix_db < database/database_dump.sql`;
 
-   // Read and execute tables.sql
-   const tablesSql = readFileSync(tablesSqlPath, 'utf8');
-   const tablesStatements = tablesSql.split(';');
-
-   for (const statement of tablesStatements) {
-    if (statement.trim() !== '') {
-      console.log(statement);
-  
-      try {
-        await pool.query(statement);
-        console.log(`Query executed successfully: ${statement}`);
-      } catch (error) {
-        console.error(`Error executing query: ${statement}\nError: ${error.message}`);
-        // Optionally, throw the error to propagate it further
-        // throw new Error(`Error executing query: ${statement}\nError: ${error.message}`);
+    await exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error during restore:', error.message);
+        return;
       }
-    }
-  }
-  
-    // Read and execute data_dump.sql
-    const dataDumpSql = readFileSync(dataDumpSqlPath, 'utf8');
-    const dataDumpStatements = dataDumpSql.split(';');
-    for (const statement of dataDumpStatements) {
-      if (statement.trim() !== '') {
-        console.log(statement);
     
-        try {
-          await pool.query(statement);
-          console.log(`Query executed successfully: ${statement}`);
-        } catch (error) {
-          console.error(`Error executing query: ${statement}\nError: ${error.message}`);
-          // Optionally, throw the error to propagate it further
-          // throw new Error(`Error executing query: ${statement}\nError: ${error.message}`);
-        }
+      if (stderr) {
+        console.error('Error output during restore:', stderr);
+        return;
       }
-    }
+    
+      console.log('Restore successful:', stdout);
+    });
 
-    console.log('Database reset successful');
   } catch (error) {
     console.error(`Database reset failed: ${error.message}`);
     throw new Error(`Database reset failed: ${error.message}`);
@@ -113,4 +81,4 @@ const executeReset = async () => {
 
 
 
-module.exports = { executeQuery, checkDatabaseConnection, executeReset };
+module.exports = { executeQuery, checkDatabaseConnection, executeReset, pool };

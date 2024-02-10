@@ -5,6 +5,7 @@
     "json-2-csv": "^5.0.1",
     "json2csv": "^6.0.0-alpha.2",
     "mysql": "^2.18.1",
+    "mysql2": "^3.9.1",
     "papaparse": "^5.4.1"
   }
 }

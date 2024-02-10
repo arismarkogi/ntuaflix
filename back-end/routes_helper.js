@@ -6,16 +6,20 @@ let converter = require('json-2-csv');
       console.error(`Invalid file format. Please provide a TSV file.`);
       return false;
     }
+    if(!req.body || Object.keys(req.body).length === 0){
+      console.error("The TSV data is empty")
+      return false;
+    }
 
     // Find the index of the first newline character
     const firstNewlineIndex = req.body.indexOf('\n');
 
     // Extract the header from the TSV data
-    const header = firstNewlineIndex !== -1 ? fileContent.substring(0, firstNewlineIndex) : req.body;
+    const header = firstNewlineIndex !== -1 ? req.body.substring(0, firstNewlineIndex) : req.body;
 
     // Check if the request body has at least one row (header)
     if (!header) {
-      console.error(`The TSV data is empty or does not contain a valid header.`);
+      console.error(`The TSV data does not contain a valid header.`);
       return false;
     }
 

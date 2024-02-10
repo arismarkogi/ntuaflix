@@ -1,4 +1,4 @@
-const { executeQuery } = require('./database/db.js');
+const { executeQuery } = require('./db.js');
 
 
 
@@ -26,12 +26,10 @@ const getTitleDetails = async (titleID) => {
   `;
 
   try {
-    const result = await executeQuery(query, [titleID]);
-    console.log('Fetched data:', result);
+    const result = await executeQuery(query, titleID);
     return result[0];
 
   } catch (error) {
-    console.error('Error fetching data:', error);
     throw error; // Rethrow the error
   }
 };
@@ -60,7 +58,6 @@ const searchTitle = async(titlePart)=>{
   `;
 try {
   const result = await executeQuery(query, titlePart);
-  console.log('Fetched data:', result);
   return result;
 
 } catch (error) {
@@ -105,7 +102,6 @@ const searchByGenre = async (qgenre, minrating, yrFrom, yrTo) => {
   query += ' GROUP BY tb.tconst;';
 
   try {
-    console.log('minrating:', minrating);
 
     // Determine the parameters to pass based on null checks
     const params = [qgenre, minrating];
@@ -115,8 +111,6 @@ const searchByGenre = async (qgenre, minrating, yrFrom, yrTo) => {
     if (yrTo !== null && !isNaN(yrTo)) {
       params.push(yrTo);
     }
-
-    console.log(params);
 
     const result = await executeQuery(query, params);
     console.log('Fetched data:', result);
@@ -149,8 +143,7 @@ const getNameDetails = async (nameID) => {
  
     try {
         const result = await executeQuery(query, [nameID]);
-        console.log('Fetched data:', result);
-        return result;
+        return result[0];
 
         } catch (error) {
         console.error('Error fetching data:', error);
@@ -176,7 +169,6 @@ const searchName = async (namePart) => {
     `;
     try {
       const result = await executeQuery(query, [`${namePart}%`]); 
-      console.log('Fetched data:', result);
       return result;
 
     } catch (error) {
