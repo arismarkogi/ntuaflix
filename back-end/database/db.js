@@ -1,3 +1,6 @@
+const { exec } = require('child_process');
+
+
 // db.js
 const mysql = require('mysql');
 const { createPool } = require('mysql2/promise');
@@ -52,7 +55,7 @@ const checkDatabaseConnection = async () => {
 const executeReset = async () => {
   try {
     // Drop the database
-    const newPool = createPool({
+    const newPool = mysql.createPool({
       host: 'localhost',
       user: 'ntuaflix_user',
       password: '12345Ab$',
@@ -61,9 +64,15 @@ const executeReset = async () => {
       },
       protocol: 'mysql_native_password'
     });
+
+    console.log("Before DROP")
     
     await newPool.query("DROP DATABASE IF EXISTS ntuaflix_db");
+
+    console.log("Before Create")
     await newPool.query("CREATE DATABASE ntuaflix_db");
+
+    console.log("Before Command")
     // Create the restore command
     const command = `mysql -h localhost -u ntuaflix_user -p12345Ab$ ntuaflix_db < database/database_dump.sql`;
 

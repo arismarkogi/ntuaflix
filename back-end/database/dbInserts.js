@@ -82,10 +82,10 @@ const insertNameBasics = async (tsvData) => {
 
     for (let i = 1; i < lines.length; i++) {
         const line = lines[i];
-        const [nconst, primaryName, , birthYear, deathYear, primaryProfession, knownForTitles, img_url_asset] = line.split('\t');
+        const [nconst, primaryName, birthYear, deathYear, primaryProfession, knownForTitles, img_url_asset] = line.split('\t');
         
         const nconstValue = nconst === '\\N' ? null : nconst;
-        
+       
         if(nconstValue){
             const primaryNameValue = primaryName === '\\N' ? null : primaryName;
             const birthYearValue = birthYear === '\\N' ? null : parseInt(birthYear, 10);

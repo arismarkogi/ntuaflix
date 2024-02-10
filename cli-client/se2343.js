@@ -138,7 +138,6 @@ async function newnames(filename) {
   //console.log(filename);
   try {
     const fileContent = fs.readFileSync(filename, 'utf8');
-    console.log(fileContent);
     const response = await axios.post(`${baseURL}/admin/upload/namebasics`, fileContent, {
       headers: {
         'Content-Type': 'text/tab-separated-values'
