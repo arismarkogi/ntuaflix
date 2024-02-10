@@ -4,18 +4,23 @@ const executeInserts = async (query, values) => {
     const connection = await mysql2Pool.getConnection();
   
     try {
-      await connection.beginTransaction();
-      // Assuming `values` is an array of arrays representing multiple rows to insert
-      await mysql2Pool.query(query, [values]);
+        await connection.beginTransaction();
+        // Assuming `values` is an array of arrays representing multiple rows to insert
+        await mysql2Pool.query(query, [values]);
   
-      await connection.commit();
+        await connection.commit();
     } catch (error) {
-      await connection.rollback();
-      throw error;
+        await connection.rollback();
+        
+       
+       console.error('Error executing query:', error);
+          
     } finally {
-      connection.release();
+        connection.release();
     }
-  };
+};
+
+
 
 const insertTitleBasics = async (tsvData) => {
     const query = `INSERT INTO TitleBasics (tconst, titleType, primaryTitle, originalTitle, isAdult, startYear, endYear,
