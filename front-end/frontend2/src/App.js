@@ -37,7 +37,7 @@ export default function App() {
 */
 //export default App;
 
-
+/*
 function MyButton() {
   return (
     <button>
@@ -54,3 +54,18 @@ export default function MyApp() {
     </div>
   );
 }
+*/
+// App.js
+
+import React from 'react';
+import HomePage from './components/HomePage'; // Η διαδρομή αναφέρεται στο φάκελο components
+
+const App = () => {
+  return (
+    <div>
+      <HomePage />
+    </div>
+  );
+}
+
+export default App;
