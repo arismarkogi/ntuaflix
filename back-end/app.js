@@ -1,5 +1,6 @@
 const express = require('express');
 const https = require('https');
+const cors = require('cors');
 const fs = require('fs');
 const routes_comp = require('./routes_compulsory'); 
 const routes_admin = require('./routes_admin');
@@ -12,6 +13,7 @@ const port = 9876;
 
 app.use('/ntuaflix_api', routes_comp);
 app.use('/ntuaflix_api', routes_admin)
+app.use(cors());
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, 'certificates/private-key.pem')),  // Modify this line
