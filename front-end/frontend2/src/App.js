@@ -1,7 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+/*
+function MyButton() {
+  return (
+    <button>
+      I'm a button
+    </button>
+  );
+}
+
+export default function App() {
   return (
     <div className="App">
       <header className="App-header">
@@ -17,9 +26,31 @@ function App() {
         >
           Learn React
         </a>
+        <div>
+      <h1>Welcome to my app</h1>
+      <MyButton />
+    </div>
       </header>
     </div>
   );
 }
+*/
+//export default App;
 
-export default App;
+
+function MyButton() {
+  return (
+    <button>
+      I'm a button
+    </button>
+  );
+}
+
+export default function MyApp() {
+  return (
+    <div>
+      <h1>Welcome to my app</h1>
+      <MyButton />
+    </div>
+  );
+}
