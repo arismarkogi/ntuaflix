@@ -1,5 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
+//import logo from './logo.svg';
+
 
 /*
 function MyButton() {
@@ -59,10 +59,16 @@ export default function MyApp() {
 
 import React from 'react';
 import HomePage from './components/HomePage'; // Η διαδρομή αναφέρεται στο φάκελο components
+import './App.css';
+//import './components/Footer';
+//import './components/Header';
 
 const App = () => {
   return (
-    <div>
+    <div className='App'> 
+      <main>
+        {/* Το κεντρικό περιεχόμενο της σελίδας εδώ */}
+      </main>
       <HomePage />
     </div>
   );
