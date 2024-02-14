@@ -133,4 +133,27 @@ router_comp.get('/bygenre', async (req, res) => {
     }
   })
 
+  router_comp.get('/searchname/:namePart', async (req, res) => {
+    try {
+        const { namePart } = req.params;
+        const nqueryobject = new nqueryObject(namePart);
+
+        if (!isValidnQuery(nqueryobject)) {
+            const validationError = new Error('Validation Error');
+            validationError.name = 'ValidationError';
+            throw validationError;
+        }
+
+        const nameList = await nameobject.getByNamePart(nqueryobject);
+
+        if (!nameList || nameList.length === 0) {
+            res.status(204).send(); // Success without data (empty response)
+        } else {
+            sendResponse(req, res, nameList);
+        }
+    } catch (error) {
+        handleErrors(res, error);
+    }
+});
+
 module.exports = router_comp;
