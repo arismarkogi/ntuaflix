@@ -23,19 +23,22 @@ const HomePage = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = async () => {
+  const handleSearch = async() => {
     try {
-      const response = await axios.get(`${baseURL}/searchname`, {
-        params: {
-          namePart: searchQuery
-        }
-      });
+      const requestBody = {
+        "namePart" : searchQuery
+      }
+      const response = await axios.get(`${baseURL}/searchname`,requestBody  );
+      // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα που έχετε λάβει από το back-end
       setSearchResults(response.data);
     } catch (error) {
       console.error('Error searching:', error);
-      // Handle errors here
     }
-  };
+  }
+  
+  
+  
+  
 
   return (
     <div>

@@ -11,9 +11,10 @@ const path = require('path');
 const app = express();
 const port = 9876;
 
+app.use(cors());
 app.use('/ntuaflix_api', routes_comp);
 app.use('/ntuaflix_api', routes_admin)
-app.use(cors());
+
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, 'certificates/private-key.pem')),  // Modify this line
