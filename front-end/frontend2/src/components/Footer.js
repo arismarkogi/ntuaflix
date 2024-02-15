@@ -39,3 +39,29 @@ const Footer = () => {
 
 export default Footer;
 */
+// Footer.js
+
+import React from 'react';
+import { FaGithub } from 'react-icons/fa';
+import './Footer.css'
+
+const Footer = () => {
+  const handleGithubClick = () => {
+    // Ανακατεύθυνση στο αντίστοιχο Git repository
+    window.location.href = 'https://github.com/your-github-repo';
+  };
+
+  return (
+    <footer className="footer">
+      <div className="footer-content">
+        <p>© {new Date().getFullYear()} Your App Name</p>
+        <a href="https://github.com/your-github-repo" target="_blank" rel="noopener noreferrer">
+          <FaGithub size={24} onClick={handleGithubClick} />
+        </a>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
+

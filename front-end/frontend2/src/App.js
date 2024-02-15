@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import React from 'react';
 import HomePage from './components/HomePage'; // Η διαδρομή αναφέρεται στο φάκελο components
 import './App.css';
-//import './components/Footer';
+import Footer from './components/Footer';
 import Header from './components/Header';
 
 
@@ -11,13 +11,13 @@ import Header from './components/Header';
 export default function App() {
   return (
     <div className="App">
-      <header className="Ηeader">
+      <Header /> {/* Προσθήκη του Header */}
       <div>
-      <main>
-      <HomePage />
-      </main>
-    </div>
-      </header>
+        <main>
+          <HomePage />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }

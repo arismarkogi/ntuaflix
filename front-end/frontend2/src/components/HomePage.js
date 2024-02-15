@@ -1,21 +1,7 @@
-/*
-import React from 'react';
-
-const HomePage = () => {
-  return (
-    <div>
-      <h1>Welcome to Ntuaflix!</h1>
-      <p>Explore the latest movies and TV shows.</p>
-      {}
-    </div>
-  );
-}
-
-
-export default HomePage;*/
-
 import React, { useState } from 'react';
 import axios from 'axios';
+import './HomePage.css';
+import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Paper } from '@mui/material';
 
 
 
@@ -41,17 +27,37 @@ const HomePage = () => {
   };
   
   return (
-    <div>
-    <h1>Search</h1>
-    <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-    <button onClick={handleSearch} disabled={loading}>{loading ? 'Searching...' : 'Search'}</button>
-    {loading && <p>Loading...</p>}
-    <ul>
-      {searchResults.map((result, index) => (
-        <li key={index}>{result.name}</li>
-      ))}
-    </ul>
-  </div>
+    <div className="center">
+      <h1>Search</h1>
+      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      <button onClick={handleSearch} disabled={loading}>{loading ? 'Searching...' : 'Search'}</button>
+      {loading && <p>Loading...</p>}
+      {searchResults.length > 0 ? (
+        <TableContainer component={Paper} style={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Όνομα</TableCell>
+                <TableCell align="center">Επίθετο</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {searchResults.map((result, index) => {
+                const [name, surname] = result.name.split(' ');
+                return (
+                  <TableRow key={index}>
+                    <TableCell align="center">{name}</TableCell>
+                    <TableCell align="center">{surname}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <p>No results found</p>
+      )}
+    </div>
   );
 };
 
