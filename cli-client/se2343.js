@@ -2,6 +2,9 @@
 var https = require('https');
 var fs = require('fs')
 const axios = require('axios');
+const readline = require('readline');
+
+
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -232,7 +235,7 @@ function validateParameters(scope, params) {
       const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
       if (!(cleanParamName in supportedParams)) {
         showSupportedParameters(scope);
-        process.exit(1);
+        //process.exit(1);
       }
     }
 
@@ -241,7 +244,7 @@ function validateParameters(scope, params) {
       const cleanParamName = paramName.startsWith('--') ? paramName.slice(2) : paramName;
       if (supportedParams[paramName] === 'required' && !params[cleanParamName]) {
         showSupportedParameters(scope);
-        process.exit(1);
+        //process.exit(1);
       }
     }
   
@@ -258,7 +261,7 @@ function validateParameters(scope, params) {
         }*/
         if(scope == 'resetall' || scope == 'healthcheck'){
           console.log(`The '${scope}' scope does not require any parameters.`);
-          process.exit(0);
+          //process.exit(0);
         }
       }
     }
@@ -302,11 +305,11 @@ function getSupportedParameters(scope) {
 
 
 // Βασική συνάρτηση για τη διαχείριση της κλήσης από το CLI
-function handleCLICommand(scope, params, format) {
+async function handleCLICommand(scope, params, format) {
   if (scope != "healthcheck" && scope != "resetall"){
     if (Object.keys(params).length === 0) {
       showSupportedParameters(scope);
-      process.exit(0);
+      //process.exit(0);
     }
   }
 
@@ -315,50 +318,50 @@ function handleCLICommand(scope, params, format) {
 
   switch (scope) {
     case 'title':
-      getTitleById(params.titleID, format);
+      await getTitleById(params.titleID, format);
       break;
     case 'searchtitle':
-      searchTitleByPart(params.titlePart, format);
+      await searchTitleByPart(params.titlePart, format);
       break;
     case 'bygenre':
-      searchByGenre({ genre : params.genre, min : params.min, from : params.from, to : params.to},format);
+      await searchByGenre({ genre : params.genre, min : params.min, from : params.from, to : params.to},format);
       break;
     case 'name':
-      getNameById(params.nameID, format);
+      await getNameById(params.nameID, format);
       break;  
     case 'searchname':
-      searchNameByPart(params.name,format);
+      await searchNameByPart(params.name,format);
       break;  
     case 'healthcheck':
-      healthcheck();
+      await healthcheck();
       break;
     case 'resetall':
-      resetall();
+      await resetall();
       break;
     case 'newtitles':
-      newtitles(params.filename,format);
+      await newtitles(params.filename,format);
       break;
     case 'newakas':
-      newakas(params.filename, format);
+      await newakas(params.filename, format);
       break;
     case 'newnames':
-      newnames(params.filename,format);
+      await newnames(params.filename,format);
       break;
     case 'newcrew':
-      newcrew(params.filename,format);
+      await newcrew(params.filename,format);
       break;
     case 'newepisode':
-      newepisode(params.filename,format);
+      await newepisode(params.filename,format);
       break;
     case 'newprincipals':
-      newprincipals(params.filename,format);
+      await newprincipals(params.filename,format);
       break;
     case 'newratings':
-      newratings(params.filename,format);
+      await newratings(params.filename,format);
       break;
     default:
       console.error('Invalid scope.');
-      process.exit(1);
+      //process.exit(1);
   }
 }
 
@@ -386,7 +389,7 @@ const formatIndex = rest.indexOf('--format');
 const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json'; // Αναζητά την παράμετρο --format
 
 
-handleCLICommand(scope, params, format);
+//handleCLICommand(scope, params, format);
 
 function parseParameters(paramArray) {
   const params = {};
@@ -412,14 +415,14 @@ function parseParameters(paramArray) {
     // Αν το scope είναι 'healthcheck', αγνοήστε τυχόν παραμέτρους και εμφανίστε μόνο μήνυμα σφάλματος
     if (paramArray.length > 0) {
       console.error(`The '${scope}' scope does not require any parameters.`);
-      process.exit(1);
+      //process.exit(1);
     }
     return params;
   }else if (scope === 'newtitles' || scope === 'newakas' || scope === 'newnames' || scope === 'newcrew' || scope === 'newepisode' || scope === 'newepisode' || scope === 'newprincipals' || scope === 'newratings') {
     const filenameIndex = paramArray.indexOf('--filename');
     if (filenameIndex === -1 || filenameIndex === paramArray.length - 1) {
       console.error(`Value is missing for parameter --filename`);
-      process.exit(1);
+      //process.exit(1);
     }
     params.filename = paramArray[filenameIndex + 1];
     return params;
@@ -438,9 +441,52 @@ function parseParameters(paramArray) {
   for (const paramName in params) {
     if (params[paramName] === true) {
       console.error(`Value is missing for parameter --${paramName}`);
-      process.exit(1);
+      //process.exit(1);
     }
   }
   return params;
 }
 
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+function runInteractive() {
+  return new Promise((resolve) => {
+    rl.question('\x1b[36m$ se2343\x1b[0m ', (command) => {
+
+      // Extract the rest of the command
+      const args = command.split(' ');
+      const [scope, ...rest] = args;
+      const params = parseParameters(rest);
+      const formatIndex = rest.indexOf('--format');
+      const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json';
+
+      resolve({ scope, params, format });
+    });
+  });
+}
+
+async function main() {
+  if (process.argv.length <= 2) {
+    while(1){
+    // If no command-line arguments, run in interactive mode
+    const { scope, params, format } = await runInteractive();
+    await handleCLICommand(scope, params, format);
+    console.log();
+    }
+  } else {
+    // Command-line mode
+    const args = process.argv.slice(2);
+    const [scope, ...rest] = args;
+    const params = parseParameters(rest);
+    const formatIndex = rest.indexOf('--format');
+    const format = formatIndex !== -1 ? rest[formatIndex + 1] : 'json';
+
+    await handleCLICommand(scope, params, format);
+  }
+}
+
+main();
