@@ -1,47 +1,20 @@
-import logo from './logo.svg';
-
-import React from 'react';
-import HomePage from './components/HomePage'; // Η διαδρομή αναφέρεται στο φάκελο components
-import './App.css';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import MovieList from './components/MovieList';
-
-
-
-export default function App() {
-  return (
-    <div className="App">
-      <Header /> {/* Προσθήκη του Header */}
-      <div>
-        <main>
-          <HomePage />
-        </main>
-        <Footer />
-      </div>
-    </div>
-  );
-}
-
-
 // App.js
-/*
+
 import React from 'react';
-import HomePage from './components/HomePage'; // Η διαδρομή αναφέρεται στο φάκελο components
 import './App.css';
-//import './components/Footer';
+//import MovieList from './components/MovieList';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
     <div className='App'> 
     <Header />
       <main>
-      <HomePage />
       </main>
+    <Footer />
     </div>
   );
 }
 
 export default App;
-*/
