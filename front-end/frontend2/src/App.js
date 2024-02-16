@@ -8,11 +8,8 @@ import Footer from './components/Footer';
 
 const App = () => {
   return (
-    <div className='App'> 
-    <Header />
-      <main>
-      </main>
-    <Footer />
+    <div className='App'>
+        <h1>React Functional Component</h1>
     </div>
   );
 }
