@@ -79,7 +79,12 @@ let converter = require('json-2-csv');
   
     if (format.toLowerCase() === 'csv') {
           console.log(data);
-          csvData = converter.json2csv(data)
+          csvData = converter.json2csv(data);
+          csvData = csvData.replace(/""/g, '"');
+          csvData = csvData.replace(/"\[/g, '[');
+          csvData = csvData.replace(/\]"/g, ']');
+
+
           res.setHeader('Content-Type', 'text/csv');
           console.log(csvData);
           res.status(200).send(csvData);
