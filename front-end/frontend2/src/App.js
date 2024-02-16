@@ -5,6 +5,7 @@ import HomePage from './components/HomePage'; // Η διαδρομή αναφέ�
 import './App.css';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import MovieList from './components/MovieList';
 
 
 

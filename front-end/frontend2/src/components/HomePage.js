@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './HomePage.css';
 import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Paper } from '@mui/material';
+import SearchBar from './SearchBar';
 
 
 
@@ -29,8 +30,12 @@ const HomePage = () => {
   return (
     <div className="center">
       <h1>Search</h1>
-      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-      <button onClick={handleSearch} disabled={loading}>{loading ? 'Searching...' : 'Search'}</button>
+      <SearchBar
+        handleSearch={handleSearch}
+        loading={loading}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       {loading && <p>Loading...</p>}
       {searchResults.length > 0 ? (
         <TableContainer component={Paper} style={{ maxHeight: '400px', overflowY: 'auto' }}>
