@@ -21,7 +21,7 @@ import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import SearchBar from './SearchBar'; // Εισαγωγή του SearchBar component
+import MySearchBar from './SearchBar'; // Εισαγωγή του SearchBar component
 
 const Header = ({ handleSearch, loading, searchQuery, setSearchQuery }) => {
   return (
@@ -31,7 +31,7 @@ const Header = ({ handleSearch, loading, searchQuery, setSearchQuery }) => {
           Welcome to Ntuaflix!
         </Typography>
         {/* Ενσωμάτωση του SearchBar component */}
-        <SearchBar handleSearch={handleSearch} loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <MySearchBar handleSearch={handleSearch} loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </Toolbar>
     </AppBar>
   );

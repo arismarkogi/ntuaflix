@@ -1,4 +1,4 @@
-/*
+
 import React from "react";
 import { Box, IconButton } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -38,9 +38,9 @@ const Footer = () => {
 };
 
 export default Footer;
-*/
-// Footer.js
 
+// Footer.js
+/*
 import React from 'react';
 import { FaGithub } from 'react-icons/fa';
 import './Footer.css'
@@ -65,3 +65,4 @@ const Footer = () => {
 
 export default Footer;
 
+*/

@@ -7,7 +7,7 @@ import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Paper
 
 const baseURL = 'https://localhost:9876/ntuaflix_api';
 
-const SearchBar = () => {
+const MySearchBar = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ const SearchBar = () => {
   return (
     <div className="center">
       <h1>Search</h1>
-      <SearchBar
+      <MySearchBar
         handleSearch={handleSearch}
         loading={loading}
         searchQuery={searchQuery}
@@ -65,5 +65,5 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default MySearchBar;
 
