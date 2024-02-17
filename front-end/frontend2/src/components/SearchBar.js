@@ -67,6 +67,7 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
+
 */
 
 
@@ -74,6 +75,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableContainer, TableHead, TableRow, TableCell, Paper, Button, TextField } from '@mui/material';
 import './SearchBar.css'
+import SearchIcon from '@mui/icons-material/Search';
 
 const baseURL = 'https://localhost:9876/ntuaflix_api';
 
@@ -102,15 +104,17 @@ const SearchBar = () => { // Αλλάξαμε το όνομα από MySearchBar
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         sx={{ height: '55px', color: 'white', backgroundColor: 'grey' }}
-        //className="searchField" // Προσθέστε την κλάση CSS για το πεδίο αναζήτησης
+        className="searchField" // Προσθέστε την κλάση CSS για το πεδίο αναζήτησης
       />
       <Button 
         variant="contained" 
         onClick={handleSearch} 
+        startIcon={<SearchIcon />}
         sx={{ height: '55px', color: 'white', backgroundColor: 'grey' }}
-        //className="searchButton" // Προσθέστε την κλάση CSS για το κουμπί αναζήτησης
+        className="searchButton" // Προσθέστε την κλάση CSS για το κουμπί αναζήτησης
+        style={{ marginRight: '10px' }}
       >
-        Searchh
+        Search
       </Button>
       {loading && <p>Loading...</p>}
       <div className="searchResultsContainer"> {/* Προσθέστε την κλάση CSS για τον κύριο δοχείο αποτελεσμάτων αναζήτησης */}

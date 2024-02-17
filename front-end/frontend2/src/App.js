@@ -10,14 +10,13 @@ const HomePage = () => {
       <header>
         <Header/>
       </header>
+      <SearchBar />
       <main>
         {/* Εδώ μπορείτε να προσθέσετε άλλα components για το κυρίως περιεχόμενο */}
-        <h1>hello</h1>
-        <SearchBar />
+        <div className="navigation">
+          <NavigationMenu />
+        </div>
       </main>
-      <nav>
-        <NavigationMenu />
-      </nav>
       <footer>
         <Footer />
       </footer>

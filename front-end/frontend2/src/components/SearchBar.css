@@ -4,6 +4,11 @@
   text-align: center;
 }
 
+.searchContainer {
+  display: flex; /* Χρησιμοποιήστε ευέλικτο διάταξη */
+  align-items: center; /* Κεντράρει τα παιδικά στοιχεία κατά μήκος του άξονα των κατάθεσης */
+}
+
 .searchField {
   width: 35%;
   margin-right: 10px;

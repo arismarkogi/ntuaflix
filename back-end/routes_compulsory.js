@@ -10,6 +10,16 @@ const titleobject = new titleObject();
 const nameobject = new nameObject();
 
 
+router_comp.get('/movies', async (req, res) => {
+  try {
+      const movies = await getAllMovies();
+      res.json(movies);
+  } catch (error) {
+      handleErrors(res, error);
+  }
+});
+
+
 router_comp.get('/title/:titleID', async (req, res) => {
 
   try {
