@@ -52,13 +52,15 @@ let converter = require('json-2-csv');
   }
   
   function isValidgQuery(gQuery) {
+    console.log(gQuery);
+
     return (
       gQuery &&
       typeof gQuery === 'object' &&
       typeof gQuery.qgenre === 'string' &&
-      typeof gQuery.minrating === 'number' &&
-      (isNaN(gQuery.yrFrom) || gQuery.yrFrom === undefined || typeof gQuery.yrFrom === 'number' ) &&
-      (isNaN(gQuery.yrTo) || gQuery.yrTo === undefined || typeof gQuery.yrTo === 'number' )
+      typeof gQuery.minrating === 'number' && 
+      (gQuery.yrFrom === undefined || typeof gQuery.yrFrom === 'number' && !isNaN(gQuery.yrFrom))  &&
+      (gQuery.yrTo === undefined || typeof gQuery.yrTo === 'number' && !isNaN(gQuery.yrTo)) 
     );
   }
   
@@ -69,6 +71,7 @@ let converter = require('json-2-csv');
   }
   
   function isValidnQuery(nQuery) {
+    console.log("nQuery: ", nQuery)
     return (nQuery && typeof nQuery === 'object' && 
     typeof nQuery.namePart === 'string');
   }
@@ -83,7 +86,6 @@ let converter = require('json-2-csv');
           csvData = csvData.replace(/""/g, '"');
           csvData = csvData.replace(/"\[/g, '[');
           csvData = csvData.replace(/\]"/g, ']');
-
 
           res.setHeader('Content-Type', 'text/csv');
           console.log(csvData);

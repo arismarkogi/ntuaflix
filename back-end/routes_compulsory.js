@@ -60,11 +60,19 @@ router_comp.get('/bygenre', async (req, res) => {
   try {
     const { qgenre, minrating, yrFrom, yrTo } = req.body;
 
-    const minratingFloat = parseFloat(minrating, 10);
-    const yrFromInt = parseInt(yrFrom, 10);
-    const yrToInt = parseInt(yrTo, 10);
-    const gqueryobject =  new gqueryObject(qgenre, minratingFloat, yrFromInt, yrToInt);
+    console.log(req.body)
 
+    console.log(yrFrom)
+    
+    const minratingFloat = parseFloat(minrating, 10);
+    
+    const yrFromInt = typeof yrFrom === 'string' ? parseInt(yrFrom, 10) : undefined;
+    const yrToInt = typeof yrTo === 'string' ? parseInt(yrTo, 10) : undefined;
+
+    console.log(yrFromInt)
+
+    const gqueryobject =  new gqueryObject(qgenre, minratingFloat, yrFromInt, yrToInt);
+    
     if (!isValidgQuery(gqueryobject)) {
       const validationError = new Error('Validation Error');
       validationError.name = 'ValidationError';

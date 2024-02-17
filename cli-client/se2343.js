@@ -455,10 +455,16 @@ const rl = readline.createInterface({
 
 function runInteractive() {
   return new Promise((resolve) => {
-    rl.question('\x1b[36m$ se2343\x1b[0m ', (command) => {
+    rl.question('\x1b[36m$\x1b[0m ', (command) => {
+
+      // Ensure the first string is "2343"
+      if (!command.startsWith('se2343')) {
+        reject(new Error('Invalid command. The first string must be "se2343".'));
+        return;
+      }
 
       // Extract the rest of the command
-      const args = command.split(' ');
+      const args = command.split(' ').slice(1);
       const [scope, ...rest] = args;
       const params = parseParameters(rest);
       const formatIndex = rest.indexOf('--format');
