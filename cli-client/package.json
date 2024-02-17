@@ -4,7 +4,7 @@
   "description": "?",
   "main": "se2343.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/cli-test.js"
   },
   "author": "billydot",
   "license": "ISC",
@@ -17,5 +17,9 @@
     "express": "^4.18.2",
     "json2csv": "^6.0.0-alpha.2",
     "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.3.0"
   }
 }

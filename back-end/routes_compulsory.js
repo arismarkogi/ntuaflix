@@ -10,15 +10,6 @@ const titleobject = new titleObject();
 const nameobject = new nameObject();
 
 
-router_comp.get('/movies', async (req, res) => {
-  try {
-      const movies = await getAllMovies();
-      res.json(movies);
-  } catch (error) {
-      handleErrors(res, error);
-  }
-});
-
 
 router_comp.get('/title/:titleID', async (req, res) => {
 
@@ -66,6 +57,31 @@ router_comp.get('/searchtitle', async (req, res) => {
     handleErrors(res, error);
   }});
 
+  router_comp.get('/searchtitle/:titlePart', async (req, res) => {
+    try {
+      const { titlePart } = req.params; // Access the titlePart from req.params
+      const tqueryobject = new tqueryObject(titlePart);
+      
+      if (!isValidtQuery(tqueryobject)) {
+        const validationError = new Error('Validation Error');
+        validationError.name = 'ValidationError';
+        throw validationError;
+      }
+  
+      const titleList = await titleobject.getByTitlePart(tqueryobject);
+  
+      // Check if titleList is not empty to determine the appropriate status code
+      if (!titleList || titleList.length === 0) {
+        res.status(204).send();
+      } else {
+        sendResponse(req, res, titleList);
+      }
+    } catch (error) {
+      handleErrors(res, error);
+    }
+  });
+  
+
 router_comp.get('/bygenre', async (req, res) => {
   try {
     const { qgenre, minrating, yrFrom, yrTo } = req.body;
@@ -102,6 +118,44 @@ router_comp.get('/bygenre', async (req, res) => {
   } catch (error) {
     handleErrors(res, error);
   }});
+
+  router_comp.get('/bygenre/:qgenre/:minrating/:yrFrom?/:yrTo?', async (req, res) => {
+    try {
+      const { qgenre, minrating, yrFrom, yrTo } = req.params;
+  
+      if (typeof minrating !== 'string' || !(typeof yrFrom === 'string' || yrFrom === undefined) || !(typeof yrTo === 'string' || yrTo === undefined)) {
+        const validationError = new Error('Validation Error');
+        validationError.name = 'ValidationError';
+        throw validationError;
+      }
+      
+      const minratingFloat = parseFloat(minrating, 10);
+      
+      const yrFromInt = typeof yrFrom === 'string' ? parseInt(yrFrom, 10) : yrFrom;
+      const yrToInt = typeof yrTo === 'string' ? parseInt(yrTo, 10) : yrTo;
+  
+      console.log(yrFromInt)
+  
+      const gqueryobject = new gqueryObject(qgenre, minratingFloat, yrFromInt, yrToInt);
+      
+      if (!isValidgQuery(gqueryobject)) {
+        const validationError = new Error('Validation Error');
+        validationError.name = 'ValidationError';
+        throw validationError;
+      }
+  
+      const byGenreList = await titleobject.getByGenre(gqueryobject);
+      
+      if (!byGenreList || byGenreList.length === 0) {
+        res.status(204).send();
+      } else {
+        sendResponse(req, res, byGenreList);
+      }
+    } catch (error) {
+      handleErrors(res, error);
+    }
+  });
+  
 
   router_comp.get('/name/:nameID', async (req, res) => {
     try{

@@ -177,35 +177,6 @@ const searchName = async (namePart) => {
     }
   };
 
-
-  const getallmovies = async () => {
-    const query = `
-    SELECT 
-    tb.tconst AS titleID,
-    tb.titleType AS type,
-    tb.originalTitle,
-    tb.img_url_asset AS titlePoster,
-    tb.startYear,
-    tb.endYear AS endYear,
-    tb.genres,
-    GROUP_CONCAT(DISTINCT CONCAT(IFNULL(ta.title, 'N/A'), '/*/', IFNULL(ta.region, 'N/A')) SEPARATOR '/**/') AS akaTitlesWithRegion,
-    GROUP_CONCAT(DISTINCT CONCAT(IFNULL(tp.nconst, 'N/A'), '/*/', IFNULL(p.primaryName, 'N/A'), '/*/', IFNULL(tp.category, 'N/A')) SEPARATOR '/**/') AS castAndCrew,
-    tr.averageRating AS avRating,
-    tr.numVotes AS nVotes
-  FROM TitleBasics tb
-  JOIN TitleAkas ta ON tb.tconst = ta.titleId
-  JOIN TitlePrincipal tp ON tb.tconst = tp.tconst
-  JOIN Person p ON tp.nconst = p.nconst
-  LEFT JOIN TitleRating tr ON tb.tconst = tr.tconst`;
-  
-    try {
-      const result = await executeQuery(query);
-      return result;
-  
-    } catch (error) {
-      throw error; // Rethrow the error
-    }
-  };
   module.exports = {getTitleDetails, getNameDetails, searchName, searchByGenre, searchTitle };
 
   
