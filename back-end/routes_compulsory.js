@@ -60,7 +60,7 @@ router_comp.get('/searchtitle', async (req, res) => {
     handleErrors(res, error);
   }});
 
-  router_comp.get('/searchtitle/:titlePart', async (req, res) => {
+  router_comp.get('/searchttitle/:titlePart', async (req, res) => {
     try {
       const { titlePart } = req.params; 
       const tqueryobject = new tqueryObject(titlePart)
@@ -124,7 +124,7 @@ router_comp.get('/bygenre', async (req, res) => {
     handleErrors(res, error);
   }});
 
-  router_comp.get('/bygenre/:qgenre/:minrating/:yrFrom?/:yrTo?', async (req, res) => {
+  router_comp.get('/byggenre/:qgenre/:minrating/:yrFrom?/:yrTo?', async (req, res) => {
     try {
       const { qgenre, minrating, yrFrom, yrTo } = req.params;
   
