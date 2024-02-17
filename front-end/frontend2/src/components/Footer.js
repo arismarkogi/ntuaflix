@@ -1,7 +1,8 @@
-
+/*
 import React from "react";
 import { Box, IconButton } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import './Footer.css'
 
 const Footer = () => {
   return (
@@ -38,9 +39,9 @@ const Footer = () => {
 };
 
 export default Footer;
-
+*/
 // Footer.js
-/*
+
 import React from 'react';
 import { FaGithub } from 'react-icons/fa';
 import './Footer.css'
@@ -48,14 +49,14 @@ import './Footer.css'
 const Footer = () => {
   const handleGithubClick = () => {
     // Ανακατεύθυνση στο αντίστοιχο Git repository
-    window.location.href = 'https://github.com/your-github-repo';
+    window.location.href = 'https://github.com/ntua/softeng23-43.git';
   };
 
   return (
     <footer className="footer">
       <div className="footer-content">
-        <p>© {new Date().getFullYear()} Your App Name</p>
-        <a href="https://github.com/your-github-repo" target="_blank" rel="noopener noreferrer">
+        <p>© {new Date().getFullYear()} Ntuaflix</p>
+        <a href="https://github.com/ntua/softeng23-43.git" target="_blank" rel="noopener noreferrer">
           <FaGithub size={24} onClick={handleGithubClick} />
         </a>
       </div>
@@ -64,5 +65,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-*/

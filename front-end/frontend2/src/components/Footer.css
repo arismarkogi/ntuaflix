@@ -1,9 +1,11 @@
-/*.footer {
+.footer {
     bottom: 0;
-    width: 100%;
-    background-color:green;
+    width: 100%; /* Σιγουρευτείτε ότι το footer καταλαμβάνει το πλήρες πλάτος της σελίδας */
+    max-width: none; /* Καθορίστε ότι η μέγιστη πλάτος του footer δεν θα είναι ίδια με το υπόλοιπο περιεχόμενο της σελίδας */
+    box-sizing: border-box;
+    background-color:grey;
     color: #fff;
     text-align: center;
     padding: 20px;
   }
-  */
+  

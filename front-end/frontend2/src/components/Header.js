@@ -40,22 +40,42 @@ export default Header;*/
 import React from "react";
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import { Home as HomeIcon, ShoppingCart as ShoppingCartIcon } from "@mui/icons-material";
-//import Link from "next/link";
+import SearchBar from "./SearchBar";
 
 const Header = () => {
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: 'grey' }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton sx={{ color: "white" }}>
             <HomeIcon />
           </IconButton>
-        <Typography variant="h6">Ntuaflix</Typography>
+        <Typography variant="h6">Welcome to Ntuaflix</Typography>
           <IconButton sx={{ color: "white" }}>
             <ShoppingCartIcon />
           </IconButton>
       </Toolbar>
     </AppBar>
   );
+  /*return (
+    <AppBar position="static" sx={{ backgroundColor: 'grey' }}>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton sx={{ color: "white" }}>
+            <HomeIcon />
+          </IconButton>
+          <Typography variant="h6">Ntuaflix</Typography>
+        </div>
+        <div>
+          <SearchBar />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton sx={{ color: "white" }}>
+            <ShoppingCartIcon />
+          </IconButton>
+        </div>
+      </Toolbar>
+    </AppBar>
+  );*/
 };
 
 export default Header;

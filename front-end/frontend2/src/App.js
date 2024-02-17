@@ -1,24 +1,28 @@
-// App.js
-
 import React from 'react';
-import './App.css';
-//import MovieList from './components/MovieList';
-import Header from './components/Header';
+import SearchBar from './components/SearchBar';
+import NavigationMenu from './components/MovieList';
 import Footer from './components/Footer';
-//import HomePage from './components/HomePage';
-//import MovieList from './components/MovieList';
-
-const App = () => {
+import Header from './components/Header';
+import './App.css'
+const HomePage = () => {
   return (
-    <div >
-      <Header />
+    <div className="container">
+      <header>
+        <Header/>
+      </header>
       <main>
-        <h1> hello world</h1>
+        {/* Εδώ μπορείτε να προσθέσετε άλλα components για το κυρίως περιεχόμενο */}
+        <h1>hello</h1>
+        <SearchBar />
       </main>
-        {/*<h1>React Functional Component</h1>*/}
+      <nav>
+        <NavigationMenu />
+      </nav>
+      <footer>
         <Footer />
+      </footer>
     </div>
   );
-}
+};
 
-export default App;
+export default HomePage;

@@ -21,15 +21,13 @@ export default MovieList;
 */
 
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
-import MySearchBar from './SearchBar';
 
-const MovieList = ({ handleSearch, loading, searchQuery, setSearchQuery }) => {
+const NavigationMenu = () => {
   return (
     <div>
-      <MySearchBar handleSearch={handleSearch} loading={loading} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <h1>Hello from nav</h1>
     </div>
   );
 };
 
-export default MovieList;
+export default NavigationMenu;
