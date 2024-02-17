@@ -38,7 +38,6 @@ router_comp.get('/searchtitle', async (req, res) => {
   try {
     const { titlePart } = req.body;
     const tqueryobject = new tqueryObject(titlePart);
-    console.log("Inside the body request")
 
     if(!isValidtQuery(tqueryobject)){
       const validationError = new Error('Validation Error');
@@ -46,6 +45,7 @@ router_comp.get('/searchtitle', async (req, res) => {
       throw validationError;
     }
 
+    console.log("Inside the body request")
 
 
     const titleList = await titleobject.getByTitlePart(tqueryobject);
@@ -60,7 +60,7 @@ router_comp.get('/searchtitle', async (req, res) => {
     handleErrors(res, error);
   }});
 
-  router_comp.get('/searchttitle/:titlePart', async (req, res) => {
+  router_comp.get('/searchtitle/:titlePart', async (req, res) => {
     try {
       const { titlePart } = req.params; 
       const tqueryobject = new tqueryObject(titlePart)
@@ -124,7 +124,7 @@ router_comp.get('/bygenre', async (req, res) => {
     handleErrors(res, error);
   }});
 
-  router_comp.get('/bygennre/:qgenre/:minrating/:yrFrom?/:yrTo?', async (req, res) => {
+  router_comp.get('/bygenre/:qgenre/:minrating/:yrFrom?/:yrTo?', async (req, res) => {
     try {
       const { qgenre, minrating, yrFrom, yrTo } = req.params;
   
