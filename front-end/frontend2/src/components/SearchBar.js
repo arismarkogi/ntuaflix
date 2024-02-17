@@ -83,12 +83,15 @@ const SearchBar = () => { // Αλλάξαμε το όνομα από MySearchBar
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [searchPerformed, setSearchPerformed] = useState(false);
+
 
   const handleSearch = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${baseURL}/searchname/${searchQuery}`);
       setSearchResults(response.data);
+      setSearchPerformed(true);
     } catch (error) {
       console.error('Error searching:', error);
     } finally {
@@ -118,7 +121,8 @@ const SearchBar = () => { // Αλλάξαμε το όνομα από MySearchBar
       </Button>
       {loading && <p>Loading...</p>}
       <div className="searchResultsContainer"> {/* Προσθέστε την κλάση CSS για τον κύριο δοχείο αποτελεσμάτων αναζήτησης */}
-        {searchResults.length > 0 ? (
+      {searchPerformed && searchResults.length === 0 && <p>No results found</p>}
+        {searchResults.length > 0 && (
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -140,8 +144,6 @@ const SearchBar = () => { // Αλλάξαμε το όνομα από MySearchBar
               </TableBody>
             </Table>
           </TableContainer>
-        ) : (
-          <p>No results found</p>
         )}
       </div>
     </div>
