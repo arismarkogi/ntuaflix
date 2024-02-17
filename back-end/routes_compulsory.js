@@ -60,14 +60,16 @@ router_comp.get('/bygenre', async (req, res) => {
   try {
     const { qgenre, minrating, yrFrom, yrTo } = req.body;
 
-    console.log(req.body)
-
-    console.log(yrFrom)
+    if (typeof minrating !== 'string' || !(typeof yrFrom == 'string' ||  yrFrom === undefined) || !(typeof yrTo === 'string' || yrTo === undefined)) {
+      const validationError = new Error('Validation Error');
+      validationError.name = 'ValidationError';
+      throw validationError;
+    }
     
     const minratingFloat = parseFloat(minrating, 10);
     
-    const yrFromInt = typeof yrFrom === 'string' ? parseInt(yrFrom, 10) : undefined;
-    const yrToInt = typeof yrTo === 'string' ? parseInt(yrTo, 10) : undefined;
+    const yrFromInt = typeof yrFrom === 'string' ? parseInt(yrFrom, 10) : yrFrom;
+    const yrToInt = typeof yrTo === 'string' ? parseInt(yrTo, 10) : yrTo;
 
     console.log(yrFromInt)
 

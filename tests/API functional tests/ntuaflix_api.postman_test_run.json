@@ -1,22 +1,22 @@
 {
-	"id": "7e140f88-aed0-4c2e-baf0-8219d5d4d0ec",
+	"id": "e0956a40-b6ac-4d8d-b888-006aea854e64",
 	"name": "ntuaflix_api",
-	"timestamp": "2024-02-17T00:14:01.297Z",
+	"timestamp": "2024-02-17T09:44:23.477Z",
 	"collection_id": "32722882-5626070c-ff1f-4dd8-ade0-6e715030741b",
 	"folder_id": 0,
 	"environment_id": "0",
-	"totalPass": 67,
-	"delay": 0,
+	"totalPass": 69,
+	"delay": "10",
 	"persist": true,
 	"status": "finished",
-	"startedAt": "2024-02-17T00:13:59.793Z",
+	"startedAt": "2024-02-17T09:44:22.193Z",
 	"totalFail": 0,
 	"results": [
 		{
 			"id": "f17eaeeb-d097-4b3c-9a2f-1af4b52e7b2c",
 			"name": "/title/:titleID",
 			"url": "https://localhost:9876/ntuaflix_api/title/tt0000929?format=json",
-			"time": 7,
+			"time": 9,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -41,7 +41,7 @@
 				}
 			},
 			"times": [
-				7
+				9
 			],
 			"allTests": [
 				{
@@ -55,7 +55,7 @@
 			"id": "7334929a-69a1-485f-976a-93d4a144291f",
 			"name": "/title/:titleID",
 			"url": "https://localhost:9876/ntuaflix_api/title/tt0000029",
-			"time": 3,
+			"time": 4,
 			"responseCode": {
 				"code": 204,
 				"name": "No Content"
@@ -70,7 +70,7 @@
 				}
 			},
 			"times": [
-				3
+				4
 			],
 			"allTests": [
 				{
@@ -82,7 +82,7 @@
 			"id": "e5c9ae43-4106-4efb-a870-37f1a0ebcbdc",
 			"name": "/title/:titleID",
 			"url": "https://localhost:9876/ntuaflix_api/title/tt0a00929",
-			"time": 2,
+			"time": 3,
 			"responseCode": {
 				"code": 400,
 				"name": "Bad Request"
@@ -102,7 +102,7 @@
 				}
 			},
 			"times": [
-				2
+				3
 			],
 			"allTests": [
 				{
@@ -115,7 +115,7 @@
 			"id": "f35deb2a-6c8a-40fd-a08a-e112f6e29bb3",
 			"name": "/searchtitle",
 			"url": "https://localhost:9876/ntuaflix_api/searchtitle?format=csv",
-			"time": 14,
+			"time": 12,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -140,7 +140,7 @@
 				}
 			},
 			"times": [
-				14
+				12
 			],
 			"allTests": [
 				{
@@ -214,7 +214,7 @@
 			"id": "4088fcef-f1bf-4428-a278-bc6977862900",
 			"name": "/bygenre",
 			"url": "https://localhost:9876/ntuaflix_api/bygenre?format=csv",
-			"time": 20,
+			"time": 17,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -239,7 +239,7 @@
 				}
 			},
 			"times": [
-				20
+				17
 			],
 			"allTests": [
 				{
@@ -253,7 +253,7 @@
 			"id": "609edd27-efff-49e0-a1dd-35027362dcba",
 			"name": "/bygenre",
 			"url": "https://localhost:9876/ntuaflix_api/bygenre?format=json",
-			"time": 31,
+			"time": 43,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -278,7 +278,7 @@
 				}
 			},
 			"times": [
-				31
+				43
 			],
 			"allTests": [
 				{
@@ -292,7 +292,7 @@
 			"id": "7824c268-e170-49f4-88cd-bad453946edb",
 			"name": "/bygenre",
 			"url": "https://localhost:9876/ntuaflix_api/bygenre?format=json",
-			"time": 4,
+			"time": 3,
 			"responseCode": {
 				"code": 204,
 				"name": "No Content"
@@ -307,7 +307,7 @@
 				}
 			},
 			"times": [
-				4
+				3
 			],
 			"allTests": [
 				{
@@ -352,7 +352,7 @@
 			"id": "3f706766-dde0-4df0-9eb1-6c95d1097564",
 			"name": "/name",
 			"url": "https://localhost:9876/ntuaflix_api/name/nm0000019?format=csv",
-			"time": 3,
+			"time": 4,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -377,7 +377,7 @@
 				}
 			},
 			"times": [
-				3
+				4
 			],
 			"allTests": [
 				{
@@ -418,25 +418,40 @@
 			"id": "4d64d950-c378-4032-8b79-9b5019cd1845",
 			"name": "/name",
 			"url": "https://localhost:9876/ntuaflix_api/name/nm0000019?format=tsv",
-			"time": 3,
+			"time": 4,
 			"responseCode": {
 				"code": 400,
 				"name": "Bad Request"
 			},
-			"tests": {},
-			"testPassFailCounts": {},
+			"tests": {
+				"Status code is 400": true,
+				"Content-Type is application/json": true
+			},
+			"testPassFailCounts": {
+				"Status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is application/json": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
 			"times": [
-				3
+				4
 			],
 			"allTests": [
-				{}
+				{
+					"Status code is 400": true,
+					"Content-Type is application/json": true
+				}
 			]
 		},
 		{
 			"id": "41e1469f-7dd3-42a1-8527-6df99448846e",
 			"name": "/searchname",
 			"url": "https://localhost:9876/ntuaflix_api/searchname?format=json",
-			"time": 5,
+			"time": 7,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -461,7 +476,7 @@
 				}
 			},
 			"times": [
-				5
+				7
 			],
 			"allTests": [
 				{
@@ -475,7 +490,7 @@
 			"id": "9b8c6013-8200-4e65-a76a-af590d65b2c2",
 			"name": "/searchname",
 			"url": "https://localhost:9876/ntuaflix_api/searchname?format=json",
-			"time": 5,
+			"time": 6,
 			"responseCode": {
 				"code": 204,
 				"name": "No Content"
@@ -490,7 +505,7 @@
 				}
 			},
 			"times": [
-				5
+				6
 			],
 			"allTests": [
 				{
@@ -502,7 +517,7 @@
 			"id": "1820e9b9-49d7-47a8-9c1f-e6c45a2ec86a",
 			"name": "/searchname",
 			"url": "https://localhost:9876/ntuaflix_api/searchname?format=json",
-			"time": 2,
+			"time": 3,
 			"responseCode": {
 				"code": 400,
 				"name": "Bad Request"
@@ -522,7 +537,7 @@
 				}
 			},
 			"times": [
-				2
+				3
 			],
 			"allTests": [
 				{
@@ -715,7 +730,7 @@
 			"id": "f63c142a-7be6-4ca6-b3e4-79ae0905c16c",
 			"name": "/admin/upload/titlecrew",
 			"url": "https://localhost:9876/ntuaflix_api/admin/upload/titlecrew",
-			"time": 2,
+			"time": 4,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -745,7 +760,7 @@
 				}
 			},
 			"times": [
-				2
+				4
 			],
 			"allTests": [
 				{
@@ -850,7 +865,7 @@
 			"id": "a200fb2c-d53a-421e-bcc1-49858a2f1ce4",
 			"name": "/admin/upload/titleratings",
 			"url": "https://localhost:9876/ntuaflix_api/admin/upload/titleratings",
-			"time": 3,
+			"time": 5,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -880,7 +895,7 @@
 				}
 			},
 			"times": [
-				3
+				5
 			],
 			"allTests": [
 				{
@@ -895,7 +910,7 @@
 			"id": "628d1b3a-8a1c-495f-9234-1a86e84b21ca",
 			"name": "/admin/resetall",
 			"url": "https://localhost:9876/ntuaflix_api/admin/resetall",
-			"time": 8,
+			"time": 23,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -925,7 +940,7 @@
 				}
 			},
 			"times": [
-				8
+				23
 			],
 			"allTests": [
 				{
@@ -938,7 +953,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 142,
+	"totalTime": 177,
 	"collection": {
 		"requests": [
 			{

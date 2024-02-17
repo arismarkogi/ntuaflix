@@ -2,12 +2,15 @@
   "name": "cli-client",
   "version": "1.0.0",
   "description": "?",
-  "main": "api.js",
+  "main": "se2343.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "billydot",
   "license": "ISC",
+  "bin": {
+    "se2343": "./se2343.js"
+  },
   "dependencies": {
     "body-parser": "^1.20.2",
     "commander": "^11.1.0",

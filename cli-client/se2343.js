@@ -1,9 +1,10 @@
+#!/usr/bin/env node
+
 // Κώδικας του προγράμματος...
 var https = require('https');
 var fs = require('fs')
 const axios = require('axios');
 const readline = require('readline');
-
 
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -447,7 +448,9 @@ function parseParameters(paramArray) {
   return params;
 }
 
+handleCLICommand(scope, params, format)
 
+/*
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -496,3 +499,4 @@ async function main() {
 }
 
 main();
+*/
