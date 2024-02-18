@@ -106,11 +106,11 @@ let converter = require('json-2-csv');
   
     if (error.name === 'ValidationError') {
       // Handle validation or casting errors
-      return res.status(400).json({ error: 'Bad request. Invalid parameters.' });
+      return res.status(400).json({ "error" : 'Bad request. Invalid parameters.' });
     }
   
     // For any other errors, return Internal Server Error
-    return res.status(500).json({ error: 'Internal server error.' });
+    return res.status(500).json({ "error": 'Internal server error.' });
   }
 
   module.exports = {isValidTSV, sendResponse, isValidNameID, isValidTitleID, isValidgQuery, isValidnQuery, isValidtQuery, handleErrors };

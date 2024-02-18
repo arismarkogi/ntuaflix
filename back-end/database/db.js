@@ -42,12 +42,12 @@ const checkDatabaseConnection = async () => {
     const queryResult = await mysqlPool.query('SELECT 1');
 
     if (queryResult) {
-      return { status: 'OK', dataconnection: await getConnectionString() };
+      return { "status": 'OK', "dataconnection": await getConnectionString() };
     } else {
-      return { status: 'failed', dataconnection: await getConnectionString() };
+      return { "status": 'failed', "dataconnection": await getConnectionString() };
     }
   } catch (error) {
-    return { status: 'failed', dataconnection: await getConnectionString() };
+    return { "status": 'failed', "dataconnection": await getConnectionString() };
   }
 };
 

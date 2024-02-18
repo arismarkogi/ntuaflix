@@ -93,9 +93,9 @@ async function healthcheck() {
     const response = await axios.get(`${baseURL}/admin/healthcheck`);
     
     if (response.status === 200) {
-      console.log('Server is healthy:', response.data);
+      handleResponse(response.data, format);
     } else {
-      console.error('Server health check failed:', response.data);
+      handleResponse(response.data, format);
     }
   } catch (error) {
     console.error('Error during health check:', error.message);
@@ -215,7 +215,7 @@ const { help } = require('yargs');
 function handleResponse(data, format) {
   
   const myformat = format || 'json';
-    
+  console.log("myformat: ", myformat)
   if (myformat.toLowerCase() === 'csv') {
           csvData = converter.json2csv(data);
           csvData = csvData.replace(/""/g, '"');
