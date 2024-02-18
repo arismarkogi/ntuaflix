@@ -60,7 +60,7 @@ router_comp.get('/searchtitle', async (req, res) => {
     handleErrors(res, error);
   }});
 
-  router_comp.get('/searchttitle/:titlePart', async (req, res) => {
+  router_comp.get('/searchttitle', async (req, res) => {
     try {
       const { titlePart } = req.query; 
       const tqueryobject = new tqueryObject(titlePart)
