@@ -1,0 +1,93 @@
+
+
+User
+I want to create a cli with nodejs. It is for a website that will display info about movies and movie principals. What components/classes should i use in my project? What linbraries also would be useful? 
+
+
+ChatGPT
+Creating a CLI (Command Line Interface) with Node.js for a movie information website involves several components and libraries to make your project efficient and user-friendly. Here's a basic structure you can consider:
+
+Commander.js: This is a popular Node.js library for building command-line interfaces. It helps you define and parse command-line options and arguments. You can use it to create commands for listing movies, getting details about a specific movie, etc.
+
+bash
+Copy code
+npm install commander
+Example usage:
+
+javascript
+Copy code
+const { program } = require('commander');
+
+program
+  .version('1.0.0')
+  .command('list', 'List all movies')
+  .command('details <movie_id>', 'Get details about a specific movie')
+  .parse(process.argv);
+Inquirer.js: It's a powerful library for collecting user input in the command line. You can use it to prompt the user for additional information or choices.
+
+bash
+Copy code
+npm install inquirer
+Example usage:
+
+javascript
+Copy code
+const inquirer = require('inquirer');
+
+inquirer.prompt([
+  {
+    type: 'input',
+    name: 'movieName',
+    message: 'Enter the movie name:',
+  },
+  // Additional prompts as needed
+])
+.then(answers => {
+  // Use the user's input
+});
+Axios or Fetch: To make HTTP requests to your movie information API. Axios is a popular choice for making HTTP requests.
+
+bash
+Copy code
+npm install axios
+Example usage:
+
+javascript
+Copy code
+const axios = require('axios');
+
+axios.get('https://api.example.com/movies')
+  .then(response => {
+    // Handle the API response
+  })
+  .catch(error => {
+    // Handle errors
+  });
+Chalk: For adding color to your console output, making it more visually appealing.
+
+bash
+Copy code
+npm install chalk
+Example usage:
+
+javascript
+Copy code
+const chalk = require('chalk');
+
+console.log(chalk.green('Success!'));
+console.log(chalk.red('Error!'));
+Figlet: For ASCII art text, which can be used for headers or banners.
+
+bash
+Copy code
+npm install figlet
+Example usage:
+
+javascript
+Copy code
+const figlet = require('figlet');
+
+console.log(figlet.textSync('Movie CLI', { horizontalLayout: 'full' }));
+Config File: You may consider using a configuration file (e.g., JSON or YAML) to store API endpoints, API keys, or any other configurable options.
+
+Remember to structure your code into modular components, separating concerns, and keeping the codebase maintainable. This basic setup can be expanded upon based on the complexity and features you want to implement in your CLI application.

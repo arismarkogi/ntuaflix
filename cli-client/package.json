@@ -4,7 +4,7 @@
   "description": "?",
   "main": "se2343.js",
   "scripts": {
-    "test": "mocha tests/cli-test.js"
+    "test": "mocha tests/**.js"
   },
   "author": "billydot",
   "license": "ISC",

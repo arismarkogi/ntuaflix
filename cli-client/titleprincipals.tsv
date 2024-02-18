@@ -1,0 +1,32 @@
+tconst	ordering	nconst	category	job	characters	img_url_asset
+tt0000929	1	nm0066941	actor	\N	\N	\N
+tt0000929	2	nm0170183	actor	\N	\N	\N
+tt0000929	3	nm0092290	actor	\N	\N	https://image.tmdb.org/t/p/{width_variable}/4LeEAQ539JgoRcqX4Er0fGOwoZg.jpg
+tt0000929	4	nm0093361	director	\N	\N	\N
+tt0000929	5	nm1902148	producer	producer	\N	\N
+tt0000929	6	nm0667386	cinematographer	\N	\N	\N
+tt0000977	1	nm0092290	actor	\N	\N	https://image.tmdb.org/t/p/{width_variable}/4LeEAQ539JgoRcqX4Er0fGOwoZg.jpg
+tt0000977	2	nm1902148	producer	producer	\N	\N
+tt0000977	3	nm0667386	cinematographer	\N	\N	\N
+tt0015414	1	nm0147437	self	\N	"[""Self""]"	\N
+tt0015414	2	nm0615736	self	\N	"[""Self""]"	https://image.tmdb.org/t/p/{width_variable}/kHiLG0lyy5WqqxsLgYPAi61R37p.jpg
+tt0015724	10	nm1457911	editor	\N	\N	\N
+tt0015724	1	nm0844752	actor	\N	"[""Bruno""]"	https://image.tmdb.org/t/p/{width_variable}/m9KfJxxrOdIBqPDOhSvw6GPA1Uy.jpg
+tt0015724	2	nm0869732	actress	\N	"[""Sofía""]"	https://image.tmdb.org/t/p/{width_variable}/2dZRblt3alR4ihcBNasYDI1gwc0.jpg
+tt0015724	3	nm0194720	actor	\N	"[""Rolando Matute""]"	https://image.tmdb.org/t/p/{width_variable}/bs5zAkh01XU6hY4bYucgDXYisIg.jpg
+tt0015724	4	nm0650495	actress	\N	"[""Salomé""]"	https://image.tmdb.org/t/p/{width_variable}/fyTgy9TKCxJetrNVGBIQ5gCIDsV.jpg
+tt0015724	5	nm0529960	director	\N	\N	\N
+tt0015724	6	nm1597742	writer	novel	\N	\N
+tt0015724	7	nm0600039	producer	producer	\N	\N
+tt0015724	8	nm0255550	composer	\N	\N	\N
+tt0015724	9	nm0006509	cinematographer	\N	\N	https://image.tmdb.org/t/p/{width_variable}/5h2U70z7OS5Rb2PdrPpjo35eWCl.jpg
+tt0034841	1	nm0572235	director	\N	\N	https://image.tmdb.org/t/p/{width_variable}/rD180RxxIcxdCZbI2X5sfSb4lT.jpg
+tt0038086	10	nm0279072	actor	\N	"[""Kriminalassistent Egge""]"	https://image.tmdb.org/t/p/{width_variable}/tWA1aLPdB5UpovFAyv9lnxpuvid.jpg
+tt0038086	1	nm0002161	actor	\N	"[""Kriminalrat Dietrich Dongen""]"	https://image.tmdb.org/t/p/{width_variable}/x1s3RdddpAfjNXVhYJqjAskklUV.jpg
+tt0038086	2	nm0081499	actor	\N	\N	https://image.tmdb.org/t/p/{width_variable}/lK3MxrK9LUHxPGvXwcejatLmRPb.jpg
+tt0038086	3	nm0220471	actor	\N	\N	\N
+tt0038086	4	nm0243017	actor	\N	\N	https://image.tmdb.org/t/p/{width_variable}/49Rl5z4OHIK8SF639np4agXzsrA.jpg
+tt0038086	5	nm0826094	director	\N	\N	https://image.tmdb.org/t/p/{width_variable}/xvP4DLKf3DE4on6tA63iNdeRt47.jpg
+tt0038086	6	nm0076617	writer	novel	\N	\N
+tt0038086	7	nm0006057	composer	\N	\N	\N
+tt0038086	8	nm0389155	cinematographer	\N	\N	\N

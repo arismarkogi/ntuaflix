@@ -7,6 +7,7 @@ const axios = require('axios');
 const readline = require('readline');
 
 
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 
@@ -154,7 +155,6 @@ async function newnames(filename) {
 }
 
 async function newcrew(filename) {
-  console.log(filename);
   try {
     const fileContent = fs.readFileSync(filename, 'utf8');
     const response = await axios.post(`${baseURL}/admin/upload/titlecrew`, fileContent, {
@@ -210,18 +210,26 @@ async function newratings(filename) {
   }
 }
 
-const { Parser } = require('json2csv');
+let converter = require('json-2-csv');
 const { help } = require('yargs');
 function handleResponse(data, format) {
-  // Εδώ μπορείτε να επεξεργαστείτε τα δεδομένα ανάλογα με το format
-  if (format === 'json') {
-    console.log(JSON.stringify(data, null, 2));
-  } else if (format === 'csv') {
-    const parser = new Parser();
-    const csvData = parser.parse(data);
-    console.log(csvData);
-    // Υλοποιήστε τον κώδικα για το format CSV
-  }
+  
+  const myformat = format || 'json';
+    
+  if (myformat.toLowerCase() === 'csv') {
+          csvData = converter.json2csv(data);
+          csvData = csvData.replace(/""/g, '"');
+          csvData = csvData.replace(/"\[/g, '[');
+          csvData = csvData.replace(/\]"/g, ']');
+
+          console.log(csvData);
+        
+    } else if (myformat.toLowerCase() === 'json'){
+      const jsonString = JSON.stringify(data, null, 2);
+      console.log(jsonString)
+    } else{
+      console.log("Format not supported")
+    }
 }
 
 function handleError(error) {
