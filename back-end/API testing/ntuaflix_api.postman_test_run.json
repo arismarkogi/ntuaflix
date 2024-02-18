@@ -1,7 +1,7 @@
 {
-	"id": "e0956a40-b6ac-4d8d-b888-006aea854e64",
+	"id": "69376b03-4e37-4193-a1d9-d3aa6f7b3410",
 	"name": "ntuaflix_api",
-	"timestamp": "2024-02-17T09:44:23.477Z",
+	"timestamp": "2024-02-18T13:40:58.177Z",
 	"collection_id": "32722882-5626070c-ff1f-4dd8-ade0-6e715030741b",
 	"folder_id": 0,
 	"environment_id": "0",
@@ -9,7 +9,7 @@
 	"delay": "10",
 	"persist": true,
 	"status": "finished",
-	"startedAt": "2024-02-17T09:44:22.193Z",
+	"startedAt": "2024-02-18T13:40:56.981Z",
 	"totalFail": 0,
 	"results": [
 		{
@@ -115,7 +115,7 @@
 			"id": "f35deb2a-6c8a-40fd-a08a-e112f6e29bb3",
 			"name": "/searchtitle",
 			"url": "https://localhost:9876/ntuaflix_api/searchtitle?format=csv",
-			"time": 12,
+			"time": 33,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -140,7 +140,7 @@
 				}
 			},
 			"times": [
-				12
+				33
 			],
 			"allTests": [
 				{
@@ -154,7 +154,7 @@
 			"id": "e6cb0f6e-c634-4d5b-b885-c13e09040b81",
 			"name": "/searchtitle",
 			"url": "https://localhost:9876/ntuaflix_api/searchtitle?format=csv",
-			"time": 4,
+			"time": 5,
 			"responseCode": {
 				"code": 204,
 				"name": "No Content"
@@ -169,7 +169,7 @@
 				}
 			},
 			"times": [
-				4
+				5
 			],
 			"allTests": [
 				{
@@ -214,7 +214,7 @@
 			"id": "4088fcef-f1bf-4428-a278-bc6977862900",
 			"name": "/bygenre",
 			"url": "https://localhost:9876/ntuaflix_api/bygenre?format=csv",
-			"time": 17,
+			"time": 19,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -239,7 +239,7 @@
 				}
 			},
 			"times": [
-				17
+				19
 			],
 			"allTests": [
 				{
@@ -253,7 +253,7 @@
 			"id": "609edd27-efff-49e0-a1dd-35027362dcba",
 			"name": "/bygenre",
 			"url": "https://localhost:9876/ntuaflix_api/bygenre?format=json",
-			"time": 43,
+			"time": 41,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -278,7 +278,7 @@
 				}
 			},
 			"times": [
-				43
+				41
 			],
 			"allTests": [
 				{
@@ -292,7 +292,7 @@
 			"id": "7824c268-e170-49f4-88cd-bad453946edb",
 			"name": "/bygenre",
 			"url": "https://localhost:9876/ntuaflix_api/bygenre?format=json",
-			"time": 3,
+			"time": 4,
 			"responseCode": {
 				"code": 204,
 				"name": "No Content"
@@ -307,7 +307,7 @@
 				}
 			},
 			"times": [
-				3
+				4
 			],
 			"allTests": [
 				{
@@ -352,7 +352,7 @@
 			"id": "3f706766-dde0-4df0-9eb1-6c95d1097564",
 			"name": "/name",
 			"url": "https://localhost:9876/ntuaflix_api/name/nm0000019?format=csv",
-			"time": 4,
+			"time": 3,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -377,7 +377,7 @@
 				}
 			},
 			"times": [
-				4
+				3
 			],
 			"allTests": [
 				{
@@ -418,7 +418,7 @@
 			"id": "4d64d950-c378-4032-8b79-9b5019cd1845",
 			"name": "/name",
 			"url": "https://localhost:9876/ntuaflix_api/name/nm0000019?format=tsv",
-			"time": 4,
+			"time": 3,
 			"responseCode": {
 				"code": 400,
 				"name": "Bad Request"
@@ -438,7 +438,7 @@
 				}
 			},
 			"times": [
-				4
+				3
 			],
 			"allTests": [
 				{
@@ -451,7 +451,7 @@
 			"id": "41e1469f-7dd3-42a1-8527-6df99448846e",
 			"name": "/searchname",
 			"url": "https://localhost:9876/ntuaflix_api/searchname?format=json",
-			"time": 7,
+			"time": 6,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -476,7 +476,7 @@
 				}
 			},
 			"times": [
-				7
+				6
 			],
 			"allTests": [
 				{
@@ -550,7 +550,7 @@
 			"id": "3d9d8b9a-079e-4727-bc4f-85ec2014352f",
 			"name": "/admin/healthcheck",
 			"url": "https://localhost:9876/ntuaflix_api/admin/healthcheck",
-			"time": 2,
+			"time": 3,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -580,7 +580,7 @@
 				}
 			},
 			"times": [
-				2
+				3
 			],
 			"allTests": [
 				{
@@ -640,7 +640,7 @@
 			"id": "beae9410-22f3-4b2b-bd45-7defb248a6ad",
 			"name": "/admin/upload/titleakas",
 			"url": "https://localhost:9876/ntuaflix_api/admin/upload/titleakas",
-			"time": 3,
+			"time": 2,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -670,7 +670,7 @@
 				}
 			},
 			"times": [
-				3
+				2
 			],
 			"allTests": [
 				{
@@ -730,51 +730,6 @@
 			"id": "f63c142a-7be6-4ca6-b3e4-79ae0905c16c",
 			"name": "/admin/upload/titlecrew",
 			"url": "https://localhost:9876/ntuaflix_api/admin/upload/titlecrew",
-			"time": 4,
-			"responseCode": {
-				"code": 200,
-				"name": "OK"
-			},
-			"tests": {
-				"Status code is 200": true,
-				"Response body is valid JSON": true,
-				"Response body contains 'status' key": true,
-				"Response 'status' is 'OK'": true
-			},
-			"testPassFailCounts": {
-				"Status code is 200": {
-					"pass": 1,
-					"fail": 0
-				},
-				"Response body is valid JSON": {
-					"pass": 1,
-					"fail": 0
-				},
-				"Response body contains 'status' key": {
-					"pass": 1,
-					"fail": 0
-				},
-				"Response 'status' is 'OK'": {
-					"pass": 1,
-					"fail": 0
-				}
-			},
-			"times": [
-				4
-			],
-			"allTests": [
-				{
-					"Status code is 200": true,
-					"Response body is valid JSON": true,
-					"Response body contains 'status' key": true,
-					"Response 'status' is 'OK'": true
-				}
-			]
-		},
-		{
-			"id": "15b0b9b6-05b0-4901-a8a4-2b935e3219ce",
-			"name": "/admin/upload/titleepisode",
-			"url": "https://localhost:9876/ntuaflix_api/admin/upload/titleepisode",
 			"time": 3,
 			"responseCode": {
 				"code": 200,
@@ -806,6 +761,51 @@
 			},
 			"times": [
 				3
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response body is valid JSON": true,
+					"Response body contains 'status' key": true,
+					"Response 'status' is 'OK'": true
+				}
+			]
+		},
+		{
+			"id": "15b0b9b6-05b0-4901-a8a4-2b935e3219ce",
+			"name": "/admin/upload/titleepisode",
+			"url": "https://localhost:9876/ntuaflix_api/admin/upload/titleepisode",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response body is valid JSON": true,
+				"Response body contains 'status' key": true,
+				"Response 'status' is 'OK'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body is valid JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains 'status' key": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response 'status' is 'OK'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
 			],
 			"allTests": [
 				{
@@ -865,7 +865,7 @@
 			"id": "a200fb2c-d53a-421e-bcc1-49858a2f1ce4",
 			"name": "/admin/upload/titleratings",
 			"url": "https://localhost:9876/ntuaflix_api/admin/upload/titleratings",
-			"time": 5,
+			"time": 3,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -895,7 +895,7 @@
 				}
 			},
 			"times": [
-				5
+				3
 			],
 			"allTests": [
 				{
@@ -910,7 +910,7 @@
 			"id": "628d1b3a-8a1c-495f-9234-1a86e84b21ca",
 			"name": "/admin/resetall",
 			"url": "https://localhost:9876/ntuaflix_api/admin/resetall",
-			"time": 23,
+			"time": 7,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -940,7 +940,7 @@
 				}
 			},
 			"times": [
-				23
+				7
 			],
 			"allTests": [
 				{

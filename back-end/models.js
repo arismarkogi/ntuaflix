@@ -145,10 +145,12 @@ class titleObject {
   
   class Rating {
     constructor(avRating, nVotes) {
-      this.avRating = avRating;
-      this.nVotes = nVotes;
+      // Convert avRating and nVotes to strings
+      this.avRating = String(avRating);
+      this.nVotes = String(nVotes);
     }
   }
+  
 
   class tqueryObject {
     constructor(titlePart) {
