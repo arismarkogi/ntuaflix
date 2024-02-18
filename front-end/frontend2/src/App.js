@@ -11,9 +11,9 @@ const HomePage = () => {
         <Header/>
       </header>
       <SearchBar />
-      <main>
+      <main  style={{ minHeight: '349px', maxWidth: '800px', margin: '0 auto' }}>
         {/* Εδώ μπορείτε να προσθέσετε άλλα components για το κυρίως περιεχόμενο */}
-        <div className="navigation">
+        <div>
           <NavigationMenu />
         </div>
       </main>
