@@ -1,0 +1,802 @@
+openapi: 3.0.0
+servers: 
+  - url: https://localhost:9876/ntuaflix_api
+  
+info:
+  description: This is a simple API for a uni project
+  version: "1.0.0"
+  title: ntuaflix API
+
+paths:
+  /admin/healthcheck:
+    get:
+      tags:
+        - Admin Endpoints
+      summary: "Check the connectivity to the database or data access through API."
+      operationId: adminHealthCheck
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      
+      responses:
+        '200':
+          description: "Success. Returns the status of the health check."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponsedb'
+        '400':
+          description: Bad input parameter.
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponsedb'
+  
+  /admin/upload/titlebasics:
+    post:
+      tags:
+        - Admin Endpoints
+      summary: "Upload a TSV file with movie title data."
+      operationId: "adminUploadTitleBasics"
+      
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          text/tab-separated-values:
+            schema:
+              $ref: '#/components/schemas/TitleBasicsFile'
+      
+      responses:
+        '200':
+          description: "Success. File uploaded successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponse'
+        '400':
+          description: "Bad input parameter."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /admin/upload/titleakas:
+    post:
+      tags:
+        - Admin Endpoints
+      summary: "Upload a TSV file with title akas data."
+      operationId: "adminUploadTitleAkas"
+      
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          text/tab-separated-values:
+            schema:
+              $ref: '#/components/schemas/TitleAkasFile'
+      
+      responses:
+        '200':
+          description: "Success. File uploaded successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponse'
+        '400':
+          description: "Bad input parameter."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/upload/namebasics:
+    post:
+      tags:
+        - Admin Endpoints
+      summary: "Upload a TSV file with name basics data."
+      operationId: "adminUploadNameBasics"
+      
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          text/tab-separated-values:
+            schema:
+              $ref: '#/components/schemas/NameBasicsFile'
+      
+      responses:
+        '200':
+          description: "Success. File uploaded successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponse'
+        '400':
+          description: "Bad input parameter."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    
+  /admin/upload/titlecrew:
+    post:
+      tags:
+        - Admin Endpoints
+      summary: "Upload a TSV file with  title crew data."
+      operationId: "adminUploadTitleCrew"
+      
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          text/tab-separated-values:
+            schema:
+              $ref: '#/components/schemas/TitleCrewFile'
+      
+      responses:
+        '200':
+          description: "Success. File uploaded successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponse'
+        '400':
+          description: "Bad input parameter."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /admin/upload/titleepisode:
+    post:
+      tags:
+        - Admin Endpoints
+      summary: "Upload a TSV file with  title episode data."
+      operationId: "adminUploadTitleEpisode"
+      
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          text/tab-separated-values:
+            schema:
+              $ref: '#/components/schemas/TitleEpisodeFile'
+      
+      responses:
+        '200':
+          description: "Success. File uploaded successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponse'
+        '400':
+          description: "Bad input parameter."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+                
+  /admin/upload/titleprincipals:
+    post:
+      tags:
+        - Admin Endpoints
+      summary: "Upload a TSV file with  title principals data."
+      operationId: "adminUploadTitlePrincipals"
+      
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          text/tab-separated-values:
+            schema:
+              $ref: '#/components/schemas/TitlePrincipalsFile'
+      
+      responses:
+        '200':
+          description: "Success. File uploaded successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponse'
+        '400':
+          description: "Bad input parameter."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    
+  /admin/upload/titleratings:
+    post:
+      tags:
+        - Admin Endpoints
+      summary: "Upload a TSV file with title ratings data."
+      operationId: "adminUploadTitleRatings"
+      
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          text/tab-separated-values:
+            schema:
+              $ref: '#/components/schemas/TitleRatingsFile'
+      
+      responses:
+        '200':
+          description: "Success. File uploaded successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponse'
+        '400':
+          description: "Bad input parameter."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/resetall:
+    post:
+      tags:
+        - Admin Endpoints
+      summary: "Reset data in database to the initial."
+      operationId: "adminresetall"
+      
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      
+      responses:
+        '200':
+          description: "Success. File uploaded successfully."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponse'
+        '400':
+          description: "Bad input parameter."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal Server Error. Failed to establish connection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /title/{titleID}:
+    get:
+      tags:
+        - User Endpoints
+      summary: Retrieve details of a movie or TV series
+      operationId: getTitleDetails
+      description: |
+        Get information about a movie or TV series based on its unique identifier (titleID).
+      parameters:
+        - in: path
+          name: titleID
+          description: The unique identifier (tconst) of the movie or TV series.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: format
+          description: Optional. Response format (json or csv).
+          required: false
+          schema:
+            type: string
+            
+      responses:
+        '200':
+          description: Success. Returns details of the requested title.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TitleObject'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponseTitle'
+        '204':
+          description: No Content. The request was successful, but there is no content to return.
+        '400':
+          description: Bad input parameter.
+        '500':
+          description: Internal Server Error. An unexpected error occurred.
+          
+  /searchtitle:
+    get:
+      tags:
+        - User Endpoints
+      summary: Search titles based on a partial title
+      operationId: searchTitles
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TQueryObject'
+          
+      responses:
+        '200':
+          description: Success. Returns a list of titles matching the criteria.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TitleObject'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponseTitle'
+        '204':
+          description: No Content. The request was successful, but there is no content to return.
+        '400':
+          description: Bad input parameter.
+        '500':
+          description: Internal Server Error. An unexpected error occurred.
+  
+  /bygenre:
+    get:
+      tags:
+        - User Endpoints
+      summary: Search titles based on genre and rating (and year)
+      operationId: searchTitlesByGenre
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GQueryObject'
+          
+      responses:
+        '200':
+          description: Success. Returns a list of titles matching the criteria.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TitleObject'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponseTitle'
+        '204':
+          description: No Content. The request was successful, but there is no content to return.
+        '400':
+          description: Bad input parameter.
+        '500':
+          description: Internal Server Error. An unexpected error occurred.
+  
+  /name/{nameID}:
+    get:
+      tags:
+        - User Endpoints
+      summary: Retrieve details of a contributor
+      operationId: getNameDetails
+      description: |
+        Get information about a contributor based on their unique identifier (nameID).
+      parameters:
+        - in: path
+          name: nameID
+          description: The unique identifier (nconst) of the contributor.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: format
+          description: Optional. Response format (json or csv).
+          required: false
+          schema:
+            type: string
+  
+      responses:
+        '200':
+          description: Success. Returns details of the requested contributor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NameObject'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponseName'
+        '204':
+          description: No Content. The request was successful, but there is no content to return.
+        '400':
+          description: Bad input parameter.
+        '500':
+          description: Internal Server Error. An unexpected error occurred.
+  
+  /searchname:
+    get:
+      tags:
+        - User Endpoints
+      summary: Search name based on a namepart
+      operationId: searchNames
+      parameters:
+      - in: query
+        name: format
+        description: Optional. Response format (json or csv).
+        required: false
+        schema:
+          type: string
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NQueryObject'
+          
+      responses:
+        '200':
+          description: Success. Returns a list of names matching the criteria.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameObject'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/CSVResponseName'
+        '204':
+          description: No Content. The request was successful, but there is no content to return.
+        '400':
+          description: Bad input parameter.
+        '500':
+          description: Internal Server Error. An unexpected error occurred.
+components:
+  schemas:
+    TitleObject:
+      type: object
+      properties:
+        titleID:
+          type: string
+          description: The unique identifier (tconst) of the title.
+        type:
+          type: string
+          description: Type of the title (short, movie, tvEpisode).
+        originalTitle:
+          type: string
+          description: The original title of the title.
+        titlePoster:
+          type: string
+          format: uri
+          description: URL of the title's poster image.
+        startYear:
+          type: string
+          description: The year of the first release.
+        endYear:
+          type: string
+          description: The year of the last release (if applicable).
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+        titleAkas:
+          type: array
+          items:
+            $ref: '#/components/schemas/AkaTitle'
+        principals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Principal'
+        rating:
+          $ref: '#/components/schemas/Rating'
+
+    Genre:
+      type: object
+      properties:
+        genreTitle:
+          type: string
+          description: The title of the genre.
+
+    AkaTitle:
+      type: object
+      properties:
+        akaTitle:
+          type: string
+          description: The parallel title.
+        regionAbbrev:
+          type: string
+
+    Principal:
+      type: object
+      properties:
+        nameID:
+          type: string
+          description: The identifier (nconst) of the contributor.
+        name:
+          type: string
+          description: The primary name of the contributor.
+        category:
+          type: string
+          description: The category of the contributor (director, actor, editor, etc.).
+
+    Rating:
+      type: object
+      properties:
+        avRating:
+          type: string
+          description: The average rating of the title.
+        nVotes:
+          type: string
+          description: The number of votes for the title.
+          
+    TQueryObject:
+      type: object
+      properties:
+        titlePart:
+          type: string
+          description: The partial title to search for.
+    NQueryObject:
+      type: object
+      properties:
+        namePart:
+          type: string
+          description: The partial name to search for.
+    
+    GQueryObject:
+      type: object
+      properties:
+        qgenre:
+          type: string
+          description: The full name of the genre to search for.
+          minLength: 1  # Example: Require at least one character
+        minrating:
+          type: string
+          description: The minimum rating to filter titles.
+          minLength: 1  # Example: Require at least one character
+        yrFrom:
+          type: string
+          description: Optional. Year "from" for filtering.
+        yrTo:
+          type: string
+          description: Optional. Year "to" for filtering.
+      required:
+        - qgenre
+        - minrating
+
+    CSVResponseTitle:
+      type: string
+      example: "titleID,type,originalTitle,titlePoster,startYear,endYear,genres,titleAkas,principals,rating.avRating,rating.nVotes\ntt0103145,tvEpisode,Two Teens and a Baby,null,1992,null,[{'genreTitle':'Adventure'},{'genreTitle':'Comedy'},{'genreTitle':'Drama'}],[{'akaTitle':'Two Teens and a Baby','regionAbbrev':'US'}],[{'nameID':'nm0000585','name':'Robert Picardo','category':'actor'},{'nameID':'nm0130808','name':'James Calvert','category':'actor'},{'nameID':'nm0247089','name':'David J. Eagle','category':'director'},{'nameID':'nm0252004','name':'Sheri Eisenberg','category':'editor'},{'nameID':'nm0265678','name':'Sandy Faison','category':'actress'},{'nameID':'nm0281234','name':'Maureen Flannigan','category':'actress'},{'nameID':'nm0348362','name':'Rick F. Gunter','category':'cinematographer'},{'nameID':'nm0453147','name':'Michael Killen','category':'producer'},{'nameID':'nm0805813','name':'Dan Slider','category':'composer'},{'nameID':'nm0823451','name':'Carol Starr Schneider','category':'writer'}],7.6,12"
+      description: CSV representation of title details.
+    
+    NameObject:
+      type: object
+      properties:
+        nameID:
+          type: string
+        name:
+          type: string
+        namePoster:
+          type: string
+        birthYr:
+          type: string
+        deathYr:
+          type: string
+        profession:
+          type: string
+        nameTitles:
+          type: array
+          items:
+            type: object
+            properties:
+              titleID:
+                type: string
+              category:
+                type: string
+    
+    CSVResponseName:
+      type: string
+      example: "nameID,name,namePoster,birthYr,deathYr,profession,nameTitles\nnm0000019,Federico Fellini,https://image.tmdb.org/t/p/{width_variable}/jH2VnHAuI0UbTWsnrjMPro0fC9j.jpg,1920,1993,'writer,director,actor',[{'titleID':'tt0098606','category':'director'}]"
+      description: CSV representation of contributor details.
+    
+    HealthCheckResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: "Status of the health check. 'OK' if successful, 'failed' otherwise."
+        dataconnection:
+          type: string
+          description: "Connection string containing information for connecting to the database or API."
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: "Status of the health check. 'OK' if successful, 'failed' otherwise."
+        dataconnection:
+          type: string
+          description: "Connection string containing information for connecting to the database or API."
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: "Status of the error response. 'failed'."
+        dataconnection:
+          type: string
+          description: "Connection string containing information for connecting to the database or API."
+    CSVResponsedb:
+      type: string
+      example: "status,dataconnection\nOK,db_connection_string"
+      description: CSV representation of the response.
+    
+    CSVResponse:
+      type: string
+      example: "status\nOK"
+      description: CSV representation of the response.
+      
+    TitleBasicsFile:
+      type: string
+      example: "tconst  titleType  primaryTitle  originalTitle  isAdult  startYear  endYear  runtimeMinutes  genres  img_url_asset\n tt0034841  short  Hen Hop  Hen Hop  0  1994  null  4  Animation,Short  https://image.tmdb.org/t/p/{width_variable}/88EH2TVg6fGK7SnGXcfQ05MD2Rk.jpg"
+      description: "TSV file with movie title data. Must be encoded as text/tab-separated-values."
+    TitleAkasFile:
+      type: string
+      example: "titleId  ordering  title  region  language  types  attributes  isOriginalTitle\ntt0000929  1  Willys Streiche: Klebolin klebt alles  DE  null  alternative  null  0"
+      description: "TSV file with titleAkas data. Must be encoded as text/tab-separated-values."
+    NameBasicsFile:
+      type: string
+      example: "nconst  primaryName  birthYear  deathYear  primaryProfession  knownForTitles  img_url_asset\nnm0516914  Tony Locklear  null  null  producer  tt0123242,tt0097666  null"
+      description: "TSV file with  name data. Must be encoded as text/tab-separated-values."
+    TitleCrewFile:
+      type: string
+      example: "tconst  directors  writers\ntt0000929  nm0093361  null"
+      description: "TSV file with  title crew data. Must be encoded as text/tab-separated-values."
+    TitleEpisodeFile:
+      type: string
+      example: "tconst  parentTconst  seasonNumber  episodeNumber\ntt0073481  tt0298685  1  4"
+      description: "TSV file with  title Episdode data. Must be encoded as text/tab-separated-values."
+    TitlePrincipalsFile:
+      type: string
+      example: "tconst  ordering  nconst  category  job  characters  img_url_asset\ntt0000929  1  nm0066941  actor  null  null  null"
+      description: "TSV file with  title principals data. Must be encoded as text/tab-separated-values."
+    TitleRatingsFile:
+      type: string
+      example: "tconst  averageRating  numVotes\ntt0000929  5.3  46"
+      description: "TSV file with  title ratings data. Must be encoded as text/tab-separated-values."
+ 
+    
