@@ -46,7 +46,10 @@ const NavigationMenu = () => {
         const fetchMovies = async () => {
             try {
                 const titlePart = '';
-                const response = await axios.get(`${baseURL}/searchtitle/${titlePart}`);
+                const response = await axios.get(`${baseURL}/searchttitle?titlePart=${titlePart}`);
+                //const response = await axios.get(`${baseURL}/searchttitle/${titlePart}`);
+                //const response = await axios.get(`${baseURL}/searchttitle`);
+                console.log(response);
                 setMovies(response.data);
             } catch (error) {
                 console.error('Error fetching movies:', error);
@@ -56,7 +59,7 @@ const NavigationMenu = () => {
         fetchMovies();
 
 
-        const interval = setInterval(fetchMovies, 5 * 60 * 1000);
+        const interval = setInterval(fetchMovies, 1 * 60 * 1000);
 
         // Cleanup function to clear interval on component unmount
         return () => clearInterval(interval);

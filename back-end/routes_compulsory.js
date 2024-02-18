@@ -62,11 +62,9 @@ router_comp.get('/searchtitle', async (req, res) => {
 
   router_comp.get('/searchttitle/:titlePart', async (req, res) => {
     try {
-      const { titlePart } = req.params; 
+      const { titlePart } = req.query; 
       const tqueryobject = new tqueryObject(titlePart)
-      
-      console.log(req.params)
-      
+            
       if (!isValidtQuery(tqueryobject)) {
         const validationError = new Error('Validation Error');
         validationError.name = 'ValidationError';
