@@ -1,7 +1,5 @@
-# SoftEng-template
+# ntuaflix
 
-Template repository, used for NTUA/ECE Software Engineering, 2023-2024
-
-Το αρχείο αυτό περιέχει οδηγίες για το στήσιμο του git repository που θα
-χρησιμοποιήσετε.  Στο τέλος, θα το αντικαταστήσετε με το `README.md` που
-θα περιγράφει το δικό σας project.
+A web application developed for the ”Software Engineering” course at NTUA, similar to IMDb. ntuaflix allows
+users to search for movies and actors, providing detailed information on both. The project is built with Node.js for the
+back-end, React for the front-end, and MySQL for database management.
