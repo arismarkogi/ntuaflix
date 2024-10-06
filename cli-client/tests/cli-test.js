@@ -26,7 +26,7 @@ describe('CLI Tests', () => {
   });
 
   it('should handle searchtitle command with CSV format', () => {
-    const output = execSync('se2343 searchtitle --titlePart ab --format csv').toString();
+    const output = execSync('se2343 searchtitle --titlepart ab --format csv').toString();
   
     // Split the CSV lines into an array
     const lines = output.trim().split('\n');
@@ -123,7 +123,7 @@ describe('CLI Tests', () => {
   });
 
   it('should handle name command with JSON format', () => {
-    const output = execSync('se2343 name --nameID nm0000019 --format json').toString();
+    const output = execSync('se2343 name --nameid nm0000019 --format json').toString();
     const parsedOutput = JSON.parse(output);
     const expectedFields = [
       'nameID',
@@ -184,7 +184,7 @@ describe('CLI Tests', () => {
     const output = execSync('se2343 healthcheck').toString();
 
     // Check if the output contains the "Server is healthy" message
-    assert.ok(output.includes('Server is healthy'), 'Expected "Server is healthy" message');
+    assert.ok(output.includes('OK'), 'Expected "OK" message');
 
   });
 

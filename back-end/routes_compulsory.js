@@ -64,7 +64,7 @@ router_comp.get('/searchtitle', async (req, res) => {
     try {
       const { titlePart } = req.query; 
       const tqueryobject = new tqueryObject(titlePart)
-            
+      console.log("Inside searchttile")
       if (!isValidtQuery(tqueryobject)) {
         const validationError = new Error('Validation Error');
         validationError.name = 'ValidationError';
@@ -197,6 +197,8 @@ router_comp.get('/bygenre', async (req, res) => {
         throw validationError;
       }
 
+      console.log("Inside search name with body")
+
       const nameList = await nameobject.getByNamePart(nqueryobject);
    
       if (!nameList || nameList.length === 0) {
@@ -220,6 +222,8 @@ router_comp.get('/bygenre', async (req, res) => {
             validationError.name = 'ValidationError';
             throw validationError;
         }
+
+        console.log("Inside search name with param")
 
         const nameList = await nameobject.getByNamePart(nqueryobject);
 

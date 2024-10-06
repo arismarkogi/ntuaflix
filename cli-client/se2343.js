@@ -215,7 +215,7 @@ const { help } = require('yargs');
 function handleResponse(data, format) {
   
   const myformat = format || 'json';
-  console.log("myformat: ", myformat)
+  //console.log("myformat: ", myformat)
   if (myformat.toLowerCase() === 'csv') {
           csvData = converter.json2csv(data);
           csvData = csvData.replace(/""/g, '"');
@@ -281,11 +281,11 @@ function getSupportedParameters(scope) {
     case 'title':
       return { titleID: 'required', format: 'optional' };
     case 'searchtitle':
-      return { titlePart: 'required', format: 'optional' };
+      return { titlepart: 'required', format: 'optional' };
     case 'bygenre':
       return { genre: 'required', min: 'required', from: 'optional', to: 'optional', format: 'optional' };
     case 'name':
-      return { nameID: 'required', format: 'optional' };
+      return { nameid: 'required', format: 'optional' };
     case 'searchname':
       return { name: 'required', format: 'optional' };
     case 'healthcheck':
@@ -330,13 +330,13 @@ async function handleCLICommand(scope, params, format) {
       await getTitleById(params.titleID, format);
       break;
     case 'searchtitle':
-      await searchTitleByPart(params.titlePart, format);
+      await searchTitleByPart(params.titlepart, format);
       break;
     case 'bygenre':
       await searchByGenre({ genre : params.genre, min : params.min, from : params.from, to : params.to},format);
       break;
     case 'name':
-      await getNameById(params.nameID, format);
+      await getNameById(params.nameid, format);
       break;  
     case 'searchname':
       await searchNameByPart(params.name,format);
